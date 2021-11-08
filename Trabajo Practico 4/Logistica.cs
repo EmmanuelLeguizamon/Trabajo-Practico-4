@@ -119,7 +119,7 @@ namespace Trabajo_Practico_4
             }
         }
 
-        //en class Logistica
+        //en class Logistica (Cyn)
 
         public static int ValidarCodigo(string codigo)
         {
