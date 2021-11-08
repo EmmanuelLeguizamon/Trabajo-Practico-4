@@ -14,7 +14,7 @@ namespace Trabajo_Practico_4
         //verifico si el file existe, sino se crea
         public static void SolicitudesDeServicio()
         {
-            //Verificao si el file existe, en caso de no existir se crea.
+            //Verifico si el file existe, en caso de no existir se crea.
             if (!File.Exists(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\SolicitudesDeServicio.txt"))
             {
                 using (var writer = new StreamWriter(@"SolicitudesDeServicio.txt"))
@@ -140,7 +140,7 @@ namespace Trabajo_Practico_4
         public static void ConsultarEstadoServicio()
         {
             Console.WriteLine("Ingrese el código de seguimiento. (5 dígitos, sin guiones ni espacios)");
-            int codigo = Logistica.ValidacionCodigo(Console.ReadLine());
+            int codigo = Logistica.ValidarCodigo(Console.ReadLine());
 
             //falta recorrer txt y escribir el estado
 
