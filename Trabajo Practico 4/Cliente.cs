@@ -10,9 +10,9 @@ namespace Trabajo_Practico_4
     class Cliente
     {
 
-        private uint NroCliente;
+        private int NroCliente = 55555;
 
-        public uint nrocliente
+        public int nrocliente
         {
             get {
                 return NroCliente;
@@ -40,23 +40,23 @@ namespace Trabajo_Practico_4
             //Validación del tipo de dato númerico. Se almacena si es int
             string input;
             bool valido = false;
-            const uint MinLenght = 10000;
-            const uint MaxLenght = 99999;
+            const int MinLenght = 10000;
+            const int MaxLenght = 99999;
             do
             {
                 Console.WriteLine("Ingrese su número de cliente corporativo. (5 dígitos, sin guiones ni espacios)");
                 input = Console.ReadLine();
 
-                if (!uint.TryParse(input, out NroCliente))
+                if (!int.TryParse(input, out NroCliente))
                 {
                     Console.WriteLine("\nNo ha ingresado un número de cliente corporativo válido (5 dígitos, sin guiones ni espacios)" +
                         "\nPresione una tecla para continuar.\n");
                     Console.ReadKey();
                     Console.Clear();
                 }
-                else if (MinLenght > NroCliente || NroCliente > MaxLenght) 
+                else if (MinLenght > NroCliente || NroCliente > MaxLenght || NroCliente > 0) 
                 {
-                    Console.WriteLine($"\nEl número de cliente corporativo debe contener 5 dígitos. " +
+                    Console.WriteLine($"\nEl número de cliente corporativo debe ser positivo y contener 5 dígitos. " +
                         "\nPresione una tecla para continuar.\n");
                     Console.ReadKey();
                     Console.Clear();
