@@ -10,7 +10,7 @@ namespace Trabajo_Practico_4
     class Cliente
     {
 
-        private int NroCliente = 55555;
+        private int NroCliente;
 
         public int nrocliente
         {
@@ -54,7 +54,7 @@ namespace Trabajo_Practico_4
                     Console.ReadKey();
                     Console.Clear();
                 }
-                else if (MinLenght > NroCliente || NroCliente > MaxLenght || NroCliente > 0) 
+                else if (MinLenght > NroCliente || NroCliente > MaxLenght) 
                 {
                     Console.WriteLine($"\nEl número de cliente corporativo debe ser positivo y contener 5 dígitos. " +
                         "\nPresione una tecla para continuar.\n");
@@ -88,7 +88,7 @@ namespace Trabajo_Practico_4
 
         public void DatosClientes()
         {
-            //Verificao si el file existe, en caso de no existir se crea.
+            //Verifico si el file existe, en caso de no existir se crea.
             if (!File.Exists(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt"))
             {
                 using (var writer = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt")) 

@@ -12,12 +12,15 @@ namespace Trabajo_Practico_4
         {
             var cliente = new Cliente();
             var logistica = new Logistica();
+            var estadodeserv = new Estado_de_servicio();
+
+            //Generación de files con casos forzados *NECESARIO que ejecute al principio*
+            cliente.DatosClientes();
+            logistica.DatosCoddeSeg();
+
 
             
-            //Generación de files
-            cliente.DatosClientes();
-            logistica.DatosCodigosdeSeg();
-            /*
+            //Validación del nro de cliente (consulta con clase cliente unicamente)
             do
             {
                 cliente.corporativo = false;
@@ -40,7 +43,8 @@ namespace Trabajo_Practico_4
 
             } while (cliente.corporativo == false);
 
-
+            /*
+            //Menu, disponible si pasa la validación de cliente
 
                 Console.WriteLine("1.Solicitar un servicio de correspondencia o encomienda.");
                 Console.WriteLine("2.Consultar el estado de un servicio.");
@@ -48,17 +52,11 @@ namespace Trabajo_Practico_4
                 Console.WriteLine("4.Finalizar");
                 Console.WriteLine("---------------------------------------------------------");
                 Console.WriteLine("Ingrese su opción");
-            */
-
-            logistica.ConsultarCodSeg();
-            logistica.codseguim = 1;
-            logistica.MostrarCodigoGenerado();
-
-
-
-
-            /*
+            
+            //Ingreso de opción
             var opcion = Console.ReadLine();
+            
+            /Switch de opciones con sus clases y métodos
             switch (opcion)
             {
                 case "1":
@@ -109,6 +107,10 @@ namespace Trabajo_Practico_4
                     break;
             }
             */
+
+            //Finaliza con la creación de los files en base a la información recopilada durante la ejecución, para que el programa reanude donde dejó
+            logistica.GenerarFile();
+
 
             Console.ReadLine();
 

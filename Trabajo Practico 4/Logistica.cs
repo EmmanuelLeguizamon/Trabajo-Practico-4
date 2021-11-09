@@ -9,9 +9,7 @@ namespace Trabajo_Practico_4
 {
     class Logistica
     {
-
-        private int CodSeguim = 10000;
-
+        private int CodSeguim;
         public int codseguim
         {
             get
@@ -20,113 +18,102 @@ namespace Trabajo_Practico_4
             }
             set
             {
-                if (value == 1) 
-                {
-                    CodSeguim = CodSeguim + 1;
-                }
-                else if (value != 1)
-                {
-                    codseguim = value;
-                }
+                CodSeguim = value;
+                
             }
         }
+        Dictionary<int, int> ClienteyCodSeg = new Dictionary<int, int>();
 
-        public void MostrarCodigoGenerado( )
+
+        //PRIMERO EN EJECTARSE - En caso de que no exista, genera un file con casos forzados. Siempre va a iniciar cargando lo que lea del file en un diccionario.
+        public void DatosCoddeSeg() //Extraer del .txt los datos
         {
-            var cliente__class = new Cliente();
-
-            using (StreamReader sr = new StreamReader(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
-            {
-                string line;
-                string[] data;
-                Dictionary<int, int> ClienteyCodSeg = new Dictionary<int, int>();
-
-                while ((line = sr.ReadLine()) != null)
-                {
-                    //data = str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    data = line.Split(',');
-                    int cliente = Convert.ToInt32(data[0]);
-                    int codigdodeseguim = Convert.ToInt32(data[1]);
-
-                    //string combined = (string.Format("{0}\t{1}\n", cliente, codigdodeseguim));
-
-                    ClienteyCodSeg.Add(cliente, codigdodeseguim);
-                }
-                sr.Close();
-
-                //string combined = (string.Format("{0}\t{1}\n", cliente.nrocliente, codseguim));
-
-                ClienteyCodSeg.Add(cliente__class.nrocliente, codseguim);
-
-                Console.WriteLine($"El código de seguimiento generado es: {codseguim}");
-
-                foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
-                {
-                    Console.WriteLine(cliente__.Key + "\t" + cliente__.Value);
-                }
-            }
-        }
-
-        public void AsociarCodSeg()
-        {
-
-        }
-
-
-        public void ConsultarCodSeg()
-        {
-            using (StreamReader sr = new StreamReader(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
-            {
-                string line;
-                string[] data;
-                Dictionary<int,int> ClienteyCodSeg = new Dictionary<int,int>();
-
-                while ((line = sr.ReadLine()) != null)
-                {
-                    //data = str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    data = line.Split(',');
-                    int cliente = Convert.ToInt32(data[0]);
-                    int codigdodeseguim = Convert.ToInt32(data[1]);
-                    
-                    //string combined = (string.Format("{0}\t{1}\n", cliente, codigdodeseguim));
-
-                    ClienteyCodSeg.Add(cliente,codigdodeseguim);
-                }
-                sr.Close();
-
-                foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
-                {
-                    Console.WriteLine(cliente__.Key + "\t" + cliente__.Value);
-                }
-            }
-        }
-
-        public void DatosCodigosdeSeg()
-        {
-            //Verificao si el file existe, en caso de no existir se crea.
+            //Verifico si el file existe, en caso de no existir se crea.
             if (!File.Exists(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
             {
-                using (var writer = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
+                using (var sw = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
                 {
-                    //Formato = Nro cliente, Cod seguim
-                    writer.WriteLine("40395,10001");
-                    writer.WriteLine("18285,10002");
-                    writer.WriteLine("14330,10003");
-                    writer.WriteLine("48407,10004");
+                    //Formato = Cod seguim (KEY), cliente
+                    sw.WriteLine("10001,40395");
+                    sw.WriteLine("10002,18285");
+                    sw.WriteLine("10003,14330");
+                    sw.WriteLine("10004,48407");
 
-                    writer.Close();
+                    sw.Close();
                 }
             }
+
+            using (StreamReader sr = new StreamReader(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
+            {
+                string line;
+                string[] data;
+
+                while ((line = sr.ReadLine()) != null)
+                {
+                    data = line.Split(',');
+                    int codigdodeseguim = Convert.ToInt32(data[0]);
+                    int cliente = Convert.ToInt32(data[1]);
+
+                    ClienteyCodSeg.Add(codigdodeseguim, cliente);
+                    codseguim = codigdodeseguim;
+                }
+                sr.Close();
+
+
+                // verificación de la tabla
+                foreach (KeyValuePair<int, int> cliente_ in ClienteyCodSeg)
+                {
+                    Console.WriteLine(cliente_.Key + "\t" + cliente_.Value);
+                }
+            }
+
         }
+
+        //Genera un nuevo código en base al último generado. Util en clase Servicios.
+        public void GeneraryMostrarMostrarCS()
+        {
+            var cliente_class = new Cliente();
+
+            codseguim = codseguim + 1;
+
+            Console.WriteLine($"El código de seguimiento generado es: {codseguim}");
+
+            ClienteyCodSeg.Add(codseguim, cliente_class.nrocliente);
+
+            foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
+            {
+                Console.WriteLine(cliente__.Key + "\t" + cliente__.Value);
+            }
+
+        }
+
+        //ULTIMO EN EJECUTARSE - Genera el file en base a lo que tiene el diccionario. Listo para la próxima ejecución.
+        public void GenerarFile()
+        {
+            using (var sw = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
+            {
+                //Formato = Nro cliente, Cod seguim
+                foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
+                {
+                    sw.WriteLine(cliente__.Key + "," + cliente__.Value);
+                }
+
+                sw.Close();
+            }
+
+        }
+
 
         //en class Logistica (Cyn)
 
-        public static int ValidarCodigo(string codigo)
+        public static int ValidarCodigoIngresado(string codigo)
         {
             bool valido = false;
             int codseg;
+            string estado;
             const int MinLenght = 10000;
             const int MaxLenght = 99999;
+            var cliente_class = new Cliente();
 
             do
             {
@@ -148,14 +135,16 @@ namespace Trabajo_Practico_4
 
                 else
                 {
-                    using (StreamReader lector = new StreamReader(@"SolicitudesDeServicio.txt"))
+                    using (StreamReader lector = new StreamReader(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
                     {
                         string line;
 
                         while ((line = lector.ReadLine()) != null)
                         {
-                            if (line.Contains(codigo))
+                            string combined = (string.Format(codigo, ",", cliente_class.nrocliente));
+                            if (line.Contains(combined))
                             {
+                                Console.WriteLine("Codigo valido");
                                 valido = true;
                             }
                         }
@@ -166,9 +155,51 @@ namespace Trabajo_Practico_4
 
             } while (valido == false);
 
-            return codseg;
-        }
 
+
+            if (codseg % 2 == 0)
+            {
+                estado = "Recibido: orden de servicio iniciada";
+
+            }else if (codseg % 3 == 0)
+            {
+                estado = "Recibido: orden de servicio iniciada\n" +
+                    "En tránsito: entregado en sucursal";
+
+            }else if (codseg % 5 == 0)
+            {
+                estado = "Recibido: orden de servicio iniciada\n" +
+                    "En tránsito: en centro de distribución";
+
+            }
+            else if (codseg % 7 == 0)
+            {
+                estado = "Recibido: orden de servicio iniciada\n" +
+                    "En tránsito: en sucursal para entrega";
+
+            }
+            else if (codseg % 11 == 0)
+            {
+                estado = "Recibido: orden de servicio iniciada\n" + 
+                    "En tránsito: en distribución";
+            }
+            else
+            {
+                estado = "Recibido: orden de servicio iniciada\n" +
+                    "En tránsito: en centro de distribución\n" +
+                    "En tránsito: entregado en sucursal\n" +
+                    "En tránsito: en sucursal para entrega\n" +
+                    "Cerrada: entregado";
+
+            }
+            
+            return codseg;
+            //return estado;
+        }
+        //Recibido: orden de servicio iniciada
+        //En tránsito: entregado en sucursal/retirado, en centro de distribución, en sucursal para entrega, en distribución
+        //Cerrada: entregado
+        //6: mod 2, mod 3, mod 5, mod 7, mod 11, mod 13
 
     }
 }
