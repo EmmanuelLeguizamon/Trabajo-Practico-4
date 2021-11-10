@@ -56,6 +56,14 @@ namespace Trabajo_Practico_4
 
         //public decimal PrecioFinal { get; set; } //precio con iva
 
+        public bool urgente { get; set; }
+
+        public bool retiroPuerta { get; set; }
+
+        public bool entregaPuerta { get; set; }
+
+        public int alcanceEnvío { get; set; }
+
         public string direccionOrigen { get; set; }
 
         public string direccionDestino { get; set; }
@@ -73,6 +81,8 @@ namespace Trabajo_Practico_4
         public string provinciaDeOrigenSeleccionada { get; set; }
 
         public string provinciaDeDestinoSeleccionada { get; set; }
+
+        public double precioFinal { get; set; }
 
         Dictionary<int, string> tipoEntrega = new Dictionary<int, string>()
         {
@@ -228,7 +238,7 @@ namespace Trabajo_Practico_4
         {
             bool flag = false;
             string paquete;
-            string tipoPaqueteSeleccionado;
+            //string tipoPaqueteSeleccionado;
 
             do
             {
@@ -437,7 +447,7 @@ namespace Trabajo_Practico_4
                 provinciaDeDestinoSeleccionada = provinciaNacional[opcionProvincia];
 
                 Console.WriteLine();
-                Console.WriteLine($"Ustéd seleccionó la provincia de origen: {provinciaDeDestinoSeleccionada}");
+                Console.WriteLine($"Usted seleccionó la provincia de destino: {provinciaDeDestinoSeleccionada}");
                 Console.WriteLine();
             }
 
@@ -493,67 +503,71 @@ namespace Trabajo_Practico_4
                 Console.WriteLine();
             }
 
-                bool flagA = false;
-                bool flagB = false;
-                string codigoPostalIngresado;
+            bool flagA = false;
+            bool flagB = false;
+            string codigoPostalIngresado;
 
-                Console.WriteLine("Por favor ingrese el codigo postal del lugar de origen");
+            Console.WriteLine("Por favor ingrese el codigo postal del lugar de origen");
 
-                codigoPostalIngresado = Console.ReadLine();
 
-                do
-                {
-                    if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un valór que no sea nulo");
-                        Console.WriteLine();
-                    }
 
-                    else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un codigo postal valido. ");
-                        Console.WriteLine();
-                    }
-
-                    else
-                    {
-                        flagA = true;
-                    }
-
-                } while (flagA == false);
-
-                codigoPostalOrigen = codigoPostalValidado;
-
-                Console.WriteLine("Por favor ingrese el codigo postal del lugar de entrega");
+            do
+            {
 
                 codigoPostalIngresado = Console.ReadLine();
 
-                do
+                if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
                 {
-                    if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un valór que no sea nulo");
-                        Console.WriteLine();
-                    }
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un valór que no sea nulo");
+                    Console.WriteLine();
+                }
 
-                    else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un codigo postal valido. ");
-                        Console.WriteLine();
-                    }
+                else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un codigo postal valido. ");
+                    Console.WriteLine();
+                }
 
-                    else
-                    {
-                        flagB = true;
-                    }
+                else
+                {
+                    flagA = true;
+                }
 
-                } while (flagB == false);
+            } while (flagA == false);
 
-                codigoPostalDestino = codigoPostalValidado;
+            codigoPostalOrigen = codigoPostalValidado;
+
+            Console.WriteLine("Por favor ingrese el codigo postal del lugar de entrega");
+
+
+            do
+            {
+                codigoPostalIngresado = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un valór que no sea nulo");
+                    Console.WriteLine();
+                }
+
+                else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un codigo postal valido. ");
+                    Console.WriteLine();
+                }
+
+                else
+                {
+                    flagB = true;
+                }
+
+            } while (flagB == false);
+
+            codigoPostalDestino = codigoPostalValidado;
 
             string direccionDeOrigen;
             bool flagD = false;
@@ -586,7 +600,7 @@ namespace Trabajo_Practico_4
 
             do
             {
-                Console.WriteLine("Por favor ingrese la dirección de origen");
+                Console.WriteLine("Por favor ingrese la dirección de destino");
 
                 direccionDeDestino = Console.ReadLine();
 
@@ -607,20 +621,184 @@ namespace Trabajo_Practico_4
 
             direccionDestino = direccionDeDestino;
 
+            //calculo alcance del envío comparando regiones ( alcance: 1 = local / 2=provincial / 3=regional / 4=nacional )
 
-            //Si el usuario elige la misma provincia en la que se encuentra el, entonces se debe preguntar si un envío es local o no con el codigo postal
-            //TODO
+            if (tipoEntregaSeleccionada == "Nacional")
+            {
+
+                if (regionCentro.Contains(provinciaDeOrigenSeleccionada) && regionCentro.Contains(provinciaDeDestinoSeleccionada) ||
+                regionNorte.Contains(provinciaDeOrigenSeleccionada) && regionNorte.Contains(provinciaDeDestinoSeleccionada) ||
+                regionSur.Contains(provinciaDeOrigenSeleccionada) && regionSur.Contains(provinciaDeDestinoSeleccionada) ||
+                regionMetropolitana.Contains(provinciaDeOrigenSeleccionada) && regionMetropolitana.Contains(provinciaDeDestinoSeleccionada))
+                {
+
+                    if (provinciaDeDestinoSeleccionada == provinciaDeOrigenSeleccionada)
+                    {
+                        if (codigoPostalDestino == codigoPostalOrigen)
+                            alcanceEnvío = 1;
+                        else
+                            alcanceEnvío = 2;
+                    }
+                    else
+                        alcanceEnvío = 3;
+                }
+                else
+                    alcanceEnvío = 4;
+            }
+            else
+            {
+                if (regionMetropolitana.Contains(provinciaDeOrigenSeleccionada))
+                {
+                    if (provinciaDeOrigenSeleccionada == "CABA")
+                        alcanceEnvío = 1;
+                    else
+                        alcanceEnvío = 3;
+                }
+                else
+                    alcanceEnvío = 4;
+
+                // AGREGAR CUADROS TARIFARIOS DE ENVÍO INTERNACIONAL
+            }
+
+            bool flag1 = false;
+            do
+            {
 
 
-            //Si el usuario elige internacional
-            //TODO
+                Console.WriteLine($"El envío a destino ¿es entrega en domicilio? De ser así, el valor adicional es de $80");
+                Console.WriteLine("¿Desea hacer el envío con entrega a domicilio? Si(S) / No(N)");
+                var tecla = Console.ReadKey(intercept: true);
+
+
+                if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
+                {
+                    Console.WriteLine("Ingrese S/N");
+                    continue;
+                }
+
+                if (tecla.Key == ConsoleKey.S)
+                {
+                    Console.WriteLine("El envío será realizado al domicilio del destinatario.");
+                    entregaPuerta = true;
+                    flag1 = true;
+                }
+                else if (tecla.Key == ConsoleKey.N)
+                {
+                    Console.WriteLine("El envío será realizado a la sucursal");
+                    entregaPuerta = false;
+                    flag1 = true;
+                }
+
+
+            } while (!flag1);
+
+            bool flag2 = false;
+            do
+            {
+
+                Console.WriteLine($"¿El despacho será realizado desde el domicilio del remitente? De ser así, el valor adicional es de $700");
+                Console.WriteLine("¿Desea hacer el despacho desde el domicilio? Si(S) / No(N)");
+                var tecla = Console.ReadKey(intercept: true);
+
+                if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
+                {
+                    Console.WriteLine("Ingrese S/N");
+                    continue;
+                }
+
+
+                if (tecla.Key == ConsoleKey.S)
+                {
+                    Console.WriteLine("El despacho será realizado desde el domicilio del remitente");
+                    retiroPuerta = true;
+                    flag2 = true;
+                }
+                else if (tecla.Key == ConsoleKey.N)
+                {
+                    Console.WriteLine("El despacho será realizado desde la sucursal");
+                    retiroPuerta = false;
+                    flag2 = true;
+                }
+
+
+            } while (!flag2);
+
+            bool flag3 = false;
+            do
+            {
+
+                Console.WriteLine($"¿Desea que el envío sea realizado de forma urgente? El adicional es de 15% sobre el valor total del envío.");
+                Console.WriteLine("¿Desea que el envío sea urgente? Si(S) / No(N)");
+                var tecla = Console.ReadKey(intercept: true);
+
+                if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
+                {
+                    Console.WriteLine("Ingrese S/N");
+                    continue;
+                }
+
+
+                if (tecla.Key == ConsoleKey.S)
+                {
+                    Console.WriteLine("El envío será realizado de forma urgente");
+                    urgente = true;
+                    flag3 = true;
+                }
+                else if (tecla.Key == ConsoleKey.N)
+                {
+                    Console.WriteLine("El envío será realizado de forma normal");
+                    urgente = false;
+                    flag3 = true;
+                }
+
+            } while (!flag3);
+
+
+            //llama a método calcular precio
+            var precio = new Precios();
+
+            if (tipoEntregaSeleccionada == "Nacional")
+            {
+                precioFinal = precio.CalcularPrecioServicio(tipoPaqueteSeleccionado, alcanceEnvío, urgente, retiroPuerta, entregaPuerta);
+
+                Console.WriteLine($"El precio final del servicio solicitado es ${precioFinal}");
+
+                bool flag4 = false;
+                do
+                {
+                    Console.WriteLine("Desea confirmar? S/N");
+                    var tecla = Console.ReadKey(intercept: true);
+
+                    if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
+                    {
+                        Console.WriteLine("Ingrese S/N");
+                        continue;
+                    }
+
+
+                    if (tecla.Key == ConsoleKey.S)
+                    {
+                        Console.WriteLine("El envío fue confirmado exitosamente");
+                        //MOSTRAR CÓDIGO DE SEGUIMIENTO
+                        //GRABAR EL SERVICIO
+                        flag4 = true;
+                    }
+                    else if (tecla.Key == ConsoleKey.N)
+                    {
+                        Console.WriteLine("El envío fue cancelado");
+                        //VOLVER AL MENU PRINCIPAL
+                        flag4 = true;
+                    }
+
+                } while (!flag4);
+            }
+            //else
+            //     precio.CalcularPrecioServicio(tipoPaqueteSeleccionado, alcanceEnvío, urgente, retiroPuerta, entregaPuerta);
+            //AGREGAR PARÁMETRO RE REGIÓN INTERNACIONAL
+
+
         }
 
-        public void serviciosAdicionales()
-        {
-            //TODO
-            //funcion que te devuelve el precio a adicionar al total en caso de decidir agregar algun servicio
-        }
 
         public void mostrarDetalle()
         {

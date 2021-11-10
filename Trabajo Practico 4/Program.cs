@@ -12,17 +12,18 @@ namespace Trabajo_Practico_4
         {
             var cliente = new Cliente();
             var logistica = new Logistica();
+            var servicio = new Servicios();
             var estadodeserv = new Estado_de_servicio();
-            
+
 
             //Generación de files con casos forzados *NECESARIO que ejecute al principio*
-            cliente.DatosClientes();
-            logistica.DatosCoddeSeg();
+            /*cliente.DatosClientes();
+            logistica.DatosCoddeSeg();*/
 
 
-            
+
             //Validación del nro de cliente (consulta con clase cliente unicamente)
-            do
+            /*do
             {
                 cliente.corporativo = false;
                 cliente.Validacion();
@@ -42,7 +43,7 @@ namespace Trabajo_Practico_4
                 Console.ReadLine();
                 Console.Clear();
 
-            } while (cliente.corporativo == false);
+            } while (cliente.corporativo == false);*/
 
             /*
             //Menu, disponible si pasa la validación de cliente
@@ -110,8 +111,10 @@ namespace Trabajo_Practico_4
             */
 
             //Finaliza con la creación de los files en base a la información recopilada durante la ejecución, para que el programa reanude donde dejó
-            logistica.GenerarFile();
+            // logistica.GenerarFile();
 
+            servicio.elegirTipoPaquete();
+            servicio.elegirTipoEntrega();
 
             Console.ReadLine();
 

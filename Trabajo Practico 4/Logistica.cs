@@ -19,7 +19,7 @@ namespace Trabajo_Practico_4
             set
             {
                 CodSeguim = value;
-                
+
             }
         }
         Dictionary<int, int> ClienteyCodSeg = new Dictionary<int, int>();
@@ -161,12 +161,14 @@ namespace Trabajo_Practico_4
             {
                 estado = "Recibido: orden de servicio iniciada";
 
-            }else if (codseg % 3 == 0)
+            }
+            else if (codseg % 3 == 0)
             {
                 estado = "Recibido: orden de servicio iniciada\n" +
                     "En tránsito: entregado en sucursal";
 
-            }else if (codseg % 5 == 0)
+            }
+            else if (codseg % 5 == 0)
             {
                 estado = "Recibido: orden de servicio iniciada\n" +
                     "En tránsito: en centro de distribución";
@@ -180,7 +182,7 @@ namespace Trabajo_Practico_4
             }
             else if (codseg % 11 == 0)
             {
-                estado = "Recibido: orden de servicio iniciada\n" + 
+                estado = "Recibido: orden de servicio iniciada\n" +
                     "En tránsito: en distribución";
             }
             else
@@ -192,7 +194,7 @@ namespace Trabajo_Practico_4
                     "Cerrada: entregado";
 
             }
-            
+
             return codseg;
             //return estado;
         }

@@ -7,28 +7,21 @@ using System.IO;
 
 namespace Trabajo_Practico_4
 {
-    class Precios
+    public class Precios
     {
 
-        private string Tipo = "";
+        public double IVA { get; } = 1.21;
 
-        public string tipo
-        {
-            get
-            {
-                return Tipo;
-            }
-            set
-            {
-                Tipo = value;
-            }
-        }
-        //servicio 1 sobre o 2 hasta 10kg o 3 hasta 20kg o 4 hasta 30kg
-        //tipo de entrga 1 a domicilio o 2 en sucursal
-        //tipo de retiro 1 en puerta o 2 en sucursal
-        //destino 1 Local (nacional) o 2 porvincial(misma prov) o 3 regional (misma region) o 4 nacional(inter-regional) o
-        //5 internacional (paises lim) o 6 Internacional (resto am lat) o 7 Inter (amer norte) o 8 Inter (Europa) o 9 Inter (asia)
-        //Internacional es facturar CABA + Internacional 
+        public double RetiroPuerta { get; } = 700;
+
+        public double EntregaPuerta { get; } = 800;
+
+        public double precioBruto { get; set; }
+
+        public double Urgente { get; } = 1.15;
+
+        public double precioFinal { get; set; }
+
 
         public void DatosTarifas()
         {
@@ -45,5 +38,50 @@ namespace Trabajo_Practico_4
                 }
             }
         }
+
+
+        //método calcular precio
+        public double CalcularPrecioServicio(string tipoPaquete, int alcance, bool urgente, bool retiroPuerta, bool entregaPuerta)
+        {
+            precioBruto = 0;
+
+            if (tipoPaquete == "Sobres hasta 500 gramos")
+                precioBruto = 200;
+            if (tipoPaquete == "Bultos hasta 10 kilogramos")
+                precioBruto = 300;
+            if (tipoPaquete == "Bultos hasta 20 kilogramos")
+                precioBruto = 400;
+            if (tipoPaquete == "Bultos hasta 30 kilogramos")
+                precioBruto = 500;
+            Console.WriteLine($"El valor por ser {tipoPaquete} es: {precioBruto}");
+            if (alcance == 1)
+                precioBruto += 100;
+            if (alcance == 2)
+                precioBruto += 200;
+            if (alcance == 3)
+                precioBruto += 300;
+            if (alcance == 4)
+                precioBruto += 400;
+            Console.WriteLine($"El valor del {tipoPaquete} y su alcance es: {precioBruto}");
+            if (entregaPuerta)
+                precioBruto += EntregaPuerta;
+            if (retiroPuerta)
+                precioBruto += RetiroPuerta;
+            if (urgente)
+                precioBruto = precioBruto * Urgente;
+
+
+            Console.WriteLine($"El valor con adicionales es: {precioBruto}");
+
+            precioFinal = precioBruto * IVA;
+
+            return precioFinal;
+        }
+
+        public void CalcularPrecioServicio(string tipoPaquete, int alcance, bool urgente, bool retiroPuerta, bool entregaPuerta, int regionInternacional)
+        {
+            //hacer
+        }
+
     }
 }

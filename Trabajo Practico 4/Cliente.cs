@@ -14,10 +14,12 @@ namespace Trabajo_Practico_4
 
         public int nrocliente
         {
-            get {
+            get
+            {
                 return NroCliente;
             }
-            set {
+            set
+            {
                 NroCliente = value;
             }
         }
@@ -54,7 +56,7 @@ namespace Trabajo_Practico_4
                     Console.ReadKey();
                     Console.Clear();
                 }
-                else if (MinLenght > NroCliente || NroCliente > MaxLenght) 
+                else if (MinLenght > NroCliente || NroCliente > MaxLenght)
                 {
                     Console.WriteLine($"\nEl número de cliente corporativo debe ser positivo y contener 5 dígitos. " +
                         "\nPresione una tecla para continuar.\n");
@@ -75,13 +77,13 @@ namespace Trabajo_Practico_4
                 Corporativo = false;
 
                 while ((line = sr.ReadLine()) != null)
-                {                    
-                    if (line.Contains(record) )
+                {
+                    if (line.Contains(record))
                     {
                         Corporativo = true;
                     }
                 }
-               
+
                 sr.Close();
             }
         }
@@ -91,7 +93,7 @@ namespace Trabajo_Practico_4
             //Verifico si el file existe, en caso de no existir se crea.
             if (!File.Exists(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt"))
             {
-                using (var writer = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt")) 
+                using (var writer = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt"))
                 {
                     writer.WriteLine("40395");
                     writer.WriteLine("18285");
