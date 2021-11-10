@@ -56,17 +56,23 @@ namespace Trabajo_Practico_4
 
         //public decimal PrecioFinal { get; set; } //precio con iva
 
+        public string direccionOrigen { get; set; }
+
+        public string direccionDestino { get; set; }
+
         public int codigoPostalOrigen { get; set; }
 
         public int codigoPostalDestino { get; set; }
 
-        public string regionProvincia { get; set; }
+        public string regionProvinciaOrigen { get; set; }
 
         public string tipoEntregaSeleccionada { get; set; }
 
         public string tipoPaqueteSeleccionado { get; set; }
 
-        public string provinciaSeleccionada { get; set; }
+        public string provinciaDeOrigenSeleccionada { get; set; }
+
+        public string provinciaDeDestinoSeleccionada { get; set; }
 
         Dictionary<int, string> tipoEntrega = new Dictionary<int, string>()
         {
@@ -82,7 +88,7 @@ namespace Trabajo_Practico_4
             [4] = "Bultos hasta 30 kilogramos"
         };
 
-        Dictionary<int, string> provincia = new Dictionary<int, string>()
+        Dictionary<int, string> provinciaNacional = new Dictionary<int, string>()
         {
             [1] = "Catamarca",
             [2] = "Chaco",
@@ -106,7 +112,95 @@ namespace Trabajo_Practico_4
             [20] = "Santa Fe",
             [21] = "Santiago del Estero",
             [22] = "Tierra del Fuego",
-            [23] = "Tucuman"
+            [23] = "Tucuman",
+            [24] = "CABA"
+
+        };
+
+        Dictionary<int, string> provinciaInternacional = new Dictionary<int, string>()
+        {
+            [1] = "Brasil - San Pablo",
+            [2] = "Uruguay - Montevideo",
+            [3] = "Paraguay - Asuncion",
+            [4] = "Colombia - Antioquia",
+            [5] = "Peru - Lima",
+            [6] = "Ecuador - Quito",
+            [7] = "Estados Unidos - California",
+            [8] = "China - Pekin",
+            [9] = "Japon - Tokio",
+            [10] = "España - Madrid"
+        };
+
+        List<string> regionNorte = new List<string>()
+        {
+            "Chaco",
+            "Salta",
+            "Catamarca",
+            "Formosa",
+            "Jujuy",
+            "Misiones",
+            "Santiago del Estero",
+            "Tucuman",
+            "Corrientes"
+        };
+
+        List<string> regionCentro = new List<string>()
+        {
+            "Cordoba",
+            "Entre Rios",
+            "La Pampa",
+            "La Rioja",
+            "Mendoza",
+            "San Juan",
+            "San Luis",
+            "Santa Fe"
+
+        };
+
+        List<string> regionSur = new List<string>()
+        {
+            "Chubut",
+            "Neuquen",
+            "Rio Negro",
+            "Santa Cruz",
+            "Tierra Del Fuego"
+        };
+
+
+        List<string> regionMetropolitana = new List<string>()
+        {
+            "Buenos Aires",
+            "CABA"
+        };
+
+        List<string> paisesLimitrofes = new List<string>()
+        {
+            "Brasil",
+            "Uruguay",
+            "Paraguay"
+        };
+
+        List<string> restoAmericaLatina = new List<string>()
+        {
+            "Colombia",
+            "Peru",
+            "Ecuador"
+        };
+
+        List<string> americaDelNorte = new List<string>()
+        {
+            "Estados Unidos"
+        };
+
+        List<string> europa = new List<string>()
+        {
+            "España"
+        };
+
+        List<string> asia = new List<string>()
+        {
+            "Japon",
+            "China"
         };
 
         //Se debe trabajar en la forma de guardar el input del usuario por la ubicación para recoger el pedido
@@ -116,36 +210,9 @@ namespace Trabajo_Practico_4
 
         public void pedirDatosOrigen()
         {
-            bool flag = false;
-            string codigoPostalIngresado;
-
-            Console.WriteLine("Por favor ingrese el codigo postal del lugar de retiro");
-
-            codigoPostalIngresado = Console.ReadLine();
-
-            do
-            {
-                if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valór que no sea nulo");
-                    Console.WriteLine();
-                }
-
-                else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un codigo postal valido. ");
-                    Console.WriteLine();
-                }
-
-            } while (flag == false);
-
-            codigoPostalOrigen = codigoPostalValidado;
 
             //TODO pedir dirección y altura
 
-            //TODO pedir provincia de Origen
 
         }
 
@@ -203,23 +270,24 @@ namespace Trabajo_Practico_4
 
             } while (flag == false);
 
+            tipoPaqueteSeleccionado = tipoPaquete[opcionPaquete];
+
             //Devuelvo la información seleccionada para el tipo de entrega
             Console.WriteLine();
-            Console.WriteLine($"Ustéd seleccionó la opción de paquete: {tipoPaqueteSeleccionado = tipoPaquete[opcionPaquete]}");
+            Console.WriteLine($"Ustéd seleccionó la opción de paquete: {tipoPaqueteSeleccionado}");
         }
-
 
         //Selecciona el usuario si desea una entrega nacional o internacional
 
         int opcionEntrega;
         int opcionProvincia;
 
+        //output LOCAL - BULTO MAYOR A 10KG
         public void elegirTipoEntrega()
         {
             bool flag = false;
             string entrega;
             string tipoEntregaSeleccionada;
-            string provinciaDeEntrega;
 
             do
             {
@@ -264,43 +332,95 @@ namespace Trabajo_Practico_4
 
             } while (flag == false);
 
+            tipoEntregaSeleccionada = tipoEntrega[opcionEntrega];
+
             //Devuelvo la información seleccionada para el tipo de entrega
             Console.WriteLine();
-            Console.WriteLine($"Ustéd seleccionó la opción de entrega: {tipoEntregaSeleccionada = tipoEntrega[opcionEntrega]}");
+            Console.WriteLine($"Ustéd seleccionó la opción de entrega: {tipoEntregaSeleccionada}");
+            Console.WriteLine();
+
+            bool flagC = false;
+            string provinciaDeOrigen;
+
+            Console.WriteLine("Por favor ingrese la provincia de origen");
+
+            do
+            {
+                foreach (KeyValuePair<int, string> opcion in provinciaNacional)
+                {
+
+
+                    Console.WriteLine($"Presione '{opcion.Key}' para la provincia de: {opcion.Value}");
+                }
+
+                provinciaDeOrigen = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(provinciaDeOrigen))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un valor que no sea nulo");
+                    Console.WriteLine();
+                }
+
+                else if (!int.TryParse(provinciaDeOrigen, out opcionProvincia))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un valor numérico");
+                    Console.WriteLine();
+                }
+
+                else if (opcionProvincia <= 0 || opcionProvincia > 24)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un valor válido dentro de las opciones");
+                    Console.WriteLine();
+                }
+
+                else
+                {
+                    flagC = true;
+                }
+
+            } while (flagC == false);
+
+            provinciaDeOrigenSeleccionada = provinciaNacional[opcionProvincia];
+
+            Console.WriteLine();
+            Console.WriteLine($"Ustéd seleccionó la provincia de origen: {provinciaDeOrigenSeleccionada}");
             Console.WriteLine();
 
             if (tipoEntregaSeleccionada == "Nacional")
             {
-                //El usuario debe decidir la provincia para que se determine si es Provincial , Regional o Nacional
-                bool flagP = false;
+                bool flagF = false;
+                string provinciaDeDestino;
+
+                Console.WriteLine("Por favor ingrese la provincia de destino nacional ");
 
                 do
                 {
-                    foreach (KeyValuePair<int, string> opcion in provincia)
+                    foreach (KeyValuePair<int, string> opcion in provinciaNacional)
                     {
-
-                        Console.WriteLine("Seleccione la provincia en donde desea realizar la entrega: ");
 
                         Console.WriteLine($"Presione '{opcion.Key}' para la provincia de: {opcion.Value}");
                     }
 
-                    provinciaDeEntrega = Console.ReadLine();
+                    provinciaDeDestino = Console.ReadLine();
 
-                    if (string.IsNullOrWhiteSpace(provinciaDeEntrega))
+                    if (string.IsNullOrWhiteSpace(provinciaDeDestino))
                     {
                         Console.WriteLine();
                         Console.WriteLine("Por favor ingrese un valor que no sea nulo");
                         Console.WriteLine();
                     }
 
-                    else if (!int.TryParse(provinciaDeEntrega, out opcionProvincia))
+                    else if (!int.TryParse(provinciaDeDestino, out opcionProvincia))
                     {
                         Console.WriteLine();
                         Console.WriteLine("Por favor ingrese un valor numérico");
                         Console.WriteLine();
                     }
 
-                    else if (opcionProvincia <= 0 || opcionProvincia > 23)
+                    else if (opcionProvincia <= 0 || opcionProvincia > 24)
                     {
                         Console.WriteLine();
                         Console.WriteLine("Por favor ingrese un valor válido dentro de las opciones");
@@ -309,23 +429,191 @@ namespace Trabajo_Practico_4
 
                     else
                     {
-                        flagP = true;
+                        flagF = true;
                     }
 
-                } while (flagP == false);
+                } while (flagF == false);
+
+                provinciaDeDestinoSeleccionada = provinciaNacional[opcionProvincia];
 
                 Console.WriteLine();
-                Console.WriteLine($"Ustéd seleccionó la opción de entrega: {provinciaSeleccionada = provincia[opcionProvincia]}");
+                Console.WriteLine($"Ustéd seleccionó la provincia de origen: {provinciaDeDestinoSeleccionada}");
                 Console.WriteLine();
-
-                //Si el usuario elige la misma provincia en la que se encuentra el, entonces se debe preguntar si un envío es local o no con el codigo postal
-                //TODO
-
-
-                //Si el usuario elige internacional
-                //TODO
-
             }
+
+            else
+            {
+                bool flagG = false;
+                string provinciaDestinoInternacional;
+
+                Console.WriteLine("Por favor ingrese la provincia de destino internacional");
+
+                do
+                {
+
+                    foreach (KeyValuePair<int, string> opcion in provinciaInternacional)
+                    {
+                        Console.WriteLine($"Presione '{opcion.Key}' para la provincia de: {opcion.Value}");
+                    }
+
+                    provinciaDestinoInternacional = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(provinciaDestinoInternacional))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor ingrese un valor que no sea nulo");
+                        Console.WriteLine();
+                    }
+
+                    else if (!int.TryParse(provinciaDestinoInternacional, out opcionProvincia))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor ingrese un valor numérico");
+                        Console.WriteLine();
+                    }
+
+                    else if (opcionProvincia <= 0 || opcionProvincia > 10)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor ingrese un valor válido dentro de las opciones");
+                        Console.WriteLine();
+                    }
+
+                    else
+                    {
+                        flagG = true;
+                    }
+
+                } while (flagG == false);
+
+                provinciaDestinoInternacional = provinciaInternacional[opcionProvincia];
+
+                Console.WriteLine();
+                Console.WriteLine($"Ustéd seleccionó la provincia de origen: {provinciaDestinoInternacional}");
+                Console.WriteLine();
+            }
+
+                bool flagA = false;
+                bool flagB = false;
+                string codigoPostalIngresado;
+
+                Console.WriteLine("Por favor ingrese el codigo postal del lugar de origen");
+
+                codigoPostalIngresado = Console.ReadLine();
+
+                do
+                {
+                    if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor ingrese un valór que no sea nulo");
+                        Console.WriteLine();
+                    }
+
+                    else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor ingrese un codigo postal valido. ");
+                        Console.WriteLine();
+                    }
+
+                    else
+                    {
+                        flagA = true;
+                    }
+
+                } while (flagA == false);
+
+                codigoPostalOrigen = codigoPostalValidado;
+
+                Console.WriteLine("Por favor ingrese el codigo postal del lugar de entrega");
+
+                codigoPostalIngresado = Console.ReadLine();
+
+                do
+                {
+                    if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor ingrese un valór que no sea nulo");
+                        Console.WriteLine();
+                    }
+
+                    else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Por favor ingrese un codigo postal valido. ");
+                        Console.WriteLine();
+                    }
+
+                    else
+                    {
+                        flagB = true;
+                    }
+
+                } while (flagB == false);
+
+                codigoPostalDestino = codigoPostalValidado;
+
+            string direccionDeOrigen;
+            bool flagD = false;
+
+            do
+            {
+                Console.WriteLine("Por favor ingrese la dirección de origen");
+
+                direccionDeOrigen = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(direccionDeOrigen))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese una dirección valida");
+                    Console.WriteLine();
+                }
+
+                else
+                {
+                    flagD = true;
+                }
+
+            } while (flagD == false);
+
+
+            direccionOrigen = direccionDeOrigen;
+
+            string direccionDeDestino;
+            bool flagE = false;
+
+            do
+            {
+                Console.WriteLine("Por favor ingrese la dirección de origen");
+
+                direccionDeDestino = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(direccionDeDestino))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese una dirección valida");
+                    Console.WriteLine();
+                }
+
+                else
+                {
+                    flagE = true;
+                }
+
+            } while (flagE == false);
+
+
+            direccionDestino = direccionDeDestino;
+
+
+            //Si el usuario elige la misma provincia en la que se encuentra el, entonces se debe preguntar si un envío es local o no con el codigo postal
+            //TODO
+
+
+            //Si el usuario elige internacional
+            //TODO
         }
 
         public void serviciosAdicionales()
