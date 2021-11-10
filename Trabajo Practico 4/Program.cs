@@ -13,6 +13,7 @@ namespace Trabajo_Practico_4
             var cliente = new Cliente();
             var logistica = new Logistica();
             var estadodeserv = new Estado_de_servicio();
+            
 
             //Generación de files con casos forzados *NECESARIO que ejecute al principio*
             cliente.DatosClientes();

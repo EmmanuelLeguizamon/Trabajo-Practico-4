@@ -23,16 +23,12 @@ namespace Trabajo_Practico_4
                 Tipo = value;
             }
         }
-//servicio 1 sobre o 2 hasta 10kg o 3 hasta 20kg o 4 hasta 30kg
-//tipo de entrga 1 a domicilio o 2 en sucursal
-//tipo de retiro 1 en puerta o 2 en sucursal
-//destino 1 Local (nacional) o 2 porvincial(misma prov) o 3 regional (misma region) o 4 nacional(inter-regional) o
+        //servicio 1 sobre o 2 hasta 10kg o 3 hasta 20kg o 4 hasta 30kg
+        //tipo de entrga 1 a domicilio o 2 en sucursal
+        //tipo de retiro 1 en puerta o 2 en sucursal
+        //destino 1 Local (nacional) o 2 porvincial(misma prov) o 3 regional (misma region) o 4 nacional(inter-regional) o
         //5 internacional (paises lim) o 6 Internacional (resto am lat) o 7 Inter (amer norte) o 8 Inter (Europa) o 9 Inter (asia)
-
-//Internacional es facturar CABA + Internacional 
-
-
-
+        //Internacional es facturar CABA + Internacional 
 
         public void DatosTarifas()
         {

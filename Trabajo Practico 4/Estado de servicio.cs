@@ -140,7 +140,7 @@ namespace Trabajo_Practico_4
         public static void ConsultarEstadoServicio()
         {
             Console.WriteLine("Ingrese el código de seguimiento. (5 dígitos, sin guiones ni espacios)");
-            int codigo = Logistica.ValidarCodigo(Console.ReadLine());
+            int codigo = Logistica.ValidarCodigoIngresado(Console.ReadLine());
 
             //falta recorrer txt y escribir el estado
 
