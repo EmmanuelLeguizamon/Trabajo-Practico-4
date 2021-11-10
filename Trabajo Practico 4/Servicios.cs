@@ -10,52 +10,6 @@ namespace Trabajo_Practico_4
     class Servicios
     {
 
-        //public int CodSer { get; set; }
-
-        //public DateTime FechaSer { get; set; }
-
-        //public int TipoServicio { get; set; }
-
-        //public string NomApDest { get; set; }
-
-        //public string DomDest { get; set; }
-
-        //public string CPDest { get; set; }
-
-        //public string CiuDest { get; set; }
-
-        //public string EstDest { get; set; }
-
-        //public string ProvDest { get; set; }
-
-        //public string PaisDest { get; set; }
-
-        //public int CUIT { get; set; }
-
-        //public string NomApRem { get; set; }
-
-        //public string DomRem { get; set; }
-
-        //public string CPRem { get; set; }
-
-        //public string CiuRem { get; set; }
-
-        //public string EstRem { get; set; }
-
-        //public string ProvRem { get; set; }
-
-        //public string PaisRem { get; set; }
-
-        //public bool EntregaPuerta { get; set; }
-
-        //public bool RetiroPuerta { get; set; }
-
-        //public bool EnvUrg { get; set; }
-
-        //public decimal PrecioSinIVA { get; set; }
-
-        //public decimal PrecioFinal { get; set; } //precio con iva
-
         public bool urgente { get; set; }
 
         public bool retiroPuerta { get; set; }
@@ -100,11 +54,11 @@ namespace Trabajo_Practico_4
 
         Dictionary<int, string> provinciaNacional = new Dictionary<int, string>()
         {
-            [1] = "Catamarca",
-            [2] = "Chaco",
-            [3] = "Chubut",
-            [4] = "Cordoba",
-            [5] = "Buenos Aires",
+            [1] = "Buenos Aires",
+            [2] = "CABA",
+            [3] = "Chaco",
+            [4] = "Chubut",
+            [5] = "Cordoba",
             [6] = "Corrientes",
             [7] = "Entre Rios",
             [8] = "Formosa",
@@ -115,15 +69,13 @@ namespace Trabajo_Practico_4
             [13] = "Misiones",
             [14] = "Neuquen",
             [15] = "Rio Negro",
-            [16] = "Salta",
+            [16] = "San Luis",
             [17] = "San Juan",
-            [18] = "San Luis",
-            [19] = "Santa Cruz",
-            [20] = "Santa Fe",
-            [21] = "Santiago del Estero",
+            [18] = "Santa Cruz",
+            [19] = "Santa Fe",
+            [20] = "Santiago del Estero",
+            [21] = "Salta",
             [22] = "Tierra del Fuego",
-            [23] = "Tucuman",
-            [24] = "CABA"
 
         };
 
@@ -136,9 +88,9 @@ namespace Trabajo_Practico_4
             [5] = "Peru - Lima",
             [6] = "Ecuador - Quito",
             [7] = "Estados Unidos - California",
-            [8] = "China - Pekin",
+            [8] = "España - Madrid",
             [9] = "Japon - Tokio",
-            [10] = "España - Madrid"
+            [10] = "China - Pekin",
         };
 
         List<string> regionNorte = new List<string>()
@@ -242,11 +194,13 @@ namespace Trabajo_Practico_4
 
             do
             {
+                Console.WriteLine("Paso 1 - Seleccione el tipo de paquete a entregar");
+                Console.WriteLine();
                 foreach (KeyValuePair<int, string> opcion in tipoPaquete)
                 {
-                    Console.WriteLine("Seleccione el tipo de paquete a entregar: ");
-
-                    Console.WriteLine($"Presione '{opcion.Key}' para {opcion.Value} ");
+                                      
+                    Console.WriteLine($"{opcion.Key} - {opcion.Value}");
+                    Console.WriteLine();
                 }
 
                 paquete = Console.ReadLine();
@@ -255,7 +209,7 @@ namespace Trabajo_Practico_4
                 if (string.IsNullOrWhiteSpace(paquete))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valór que no sea nulo");
+                    Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
                 }
 
@@ -269,7 +223,7 @@ namespace Trabajo_Practico_4
                 else if (opcionPaquete != 1 && opcionPaquete != 2 && opcionPaquete != 3 && opcionPaquete != 4)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor válido dentro de las opciones");
+                    Console.WriteLine("Por favor ingrese una de las opciones");
                     Console.WriteLine();
                 }
 
@@ -284,8 +238,16 @@ namespace Trabajo_Practico_4
 
             //Devuelvo la información seleccionada para el tipo de entrega
             Console.WriteLine();
-            Console.WriteLine($"Ustéd seleccionó la opción de paquete: {tipoPaqueteSeleccionado}");
+            Console.WriteLine($"Eligió: {tipoPaqueteSeleccionado}");
+            Console.WriteLine();
+
+            Console.WriteLine("------Enter para continuar------");
+            Console.ReadKey();//
+            
+            Console.Clear();//
         }
+
+        
 
         //Selecciona el usuario si desea una entrega nacional o internacional
 
@@ -301,13 +263,14 @@ namespace Trabajo_Practico_4
 
             do
             {
+                Console.WriteLine("Paso 2 - Seleccione el tipo de entrega a realizar");
+                Console.WriteLine();
 
                 foreach (KeyValuePair<int, string> opcion in tipoEntrega)
                 {
-                    Console.WriteLine("Seleccione el tipo de entrega a realizar: ");
-
-                    Console.WriteLine($"Presione '{opcion.Key}' para {opcion.Value} ");
-
+                
+                    Console.WriteLine($"{opcion.Key} - {opcion.Value}");
+                    Console.WriteLine();//
                 }
 
                 entrega = Console.ReadLine();
@@ -316,7 +279,7 @@ namespace Trabajo_Practico_4
                 if (string.IsNullOrWhiteSpace(entrega))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor que no sea nulo");
+                    Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
                 }
 
@@ -330,7 +293,7 @@ namespace Trabajo_Practico_4
                 else if (opcionEntrega != 1 && opcionEntrega != 2)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor válido dentro de las opciones");
+                    Console.WriteLine("Por favor ingrese una de las opciones");
                     Console.WriteLine();
                 }
 
@@ -346,21 +309,24 @@ namespace Trabajo_Practico_4
 
             //Devuelvo la información seleccionada para el tipo de entrega
             Console.WriteLine();
-            Console.WriteLine($"Ustéd seleccionó la opción de entrega: {tipoEntregaSeleccionada}");
+            Console.WriteLine($"Eligió: {tipoEntregaSeleccionada}");
             Console.WriteLine();
+
+            Console.WriteLine("------Enter para continuar------");
+            Console.ReadKey();//
+            
+            Console.Clear();//
 
             bool flagC = false;
             string provinciaDeOrigen;
 
-            Console.WriteLine("Por favor ingrese la provincia de origen");
-
+            Console.WriteLine("Paso 3 - Seleccione la provincia de ORIGEN");
+            Console.WriteLine();
             do
             {
                 foreach (KeyValuePair<int, string> opcion in provinciaNacional)
                 {
-
-
-                    Console.WriteLine($"Presione '{opcion.Key}' para la provincia de: {opcion.Value}");
+                    Console.WriteLine($"{opcion.Key} - {opcion.Value}");
                 }
 
                 provinciaDeOrigen = Console.ReadLine();
@@ -368,7 +334,7 @@ namespace Trabajo_Practico_4
                 if (string.IsNullOrWhiteSpace(provinciaDeOrigen))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor que no sea nulo");
+                    Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
                 }
 
@@ -382,7 +348,7 @@ namespace Trabajo_Practico_4
                 else if (opcionProvincia <= 0 || opcionProvincia > 24)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor válido dentro de las opciones");
+                    Console.WriteLine("Por favor ingrese una de las opciones");
                     Console.WriteLine();
                 }
 
@@ -396,22 +362,27 @@ namespace Trabajo_Practico_4
             provinciaDeOrigenSeleccionada = provinciaNacional[opcionProvincia];
 
             Console.WriteLine();
-            Console.WriteLine($"Ustéd seleccionó la provincia de origen: {provinciaDeOrigenSeleccionada}");
+            Console.WriteLine($"Eligió {provinciaDeOrigenSeleccionada} como ORIGEN");
             Console.WriteLine();
+
+            Console.WriteLine("------Enter para continuar------");
+            Console.ReadKey();//
+
+            Console.Clear();//
 
             if (tipoEntregaSeleccionada == "Nacional")
             {
                 bool flagF = false;
                 string provinciaDeDestino;
 
-                Console.WriteLine("Por favor ingrese la provincia de destino nacional ");
-
+                Console.WriteLine("Paso 4 - Seleccione la provincia/estado de DESTINO");
+                Console.WriteLine();
                 do
                 {
                     foreach (KeyValuePair<int, string> opcion in provinciaNacional)
                     {
 
-                        Console.WriteLine($"Presione '{opcion.Key}' para la provincia de: {opcion.Value}");
+                        Console.WriteLine($"{opcion.Key} - {opcion.Value}");
                     }
 
                     provinciaDeDestino = Console.ReadLine();
@@ -419,7 +390,7 @@ namespace Trabajo_Practico_4
                     if (string.IsNullOrWhiteSpace(provinciaDeDestino))
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un valor que no sea nulo");
+                        Console.WriteLine("Por favor, no ingrese valores vacíos");
                         Console.WriteLine();
                     }
 
@@ -433,7 +404,7 @@ namespace Trabajo_Practico_4
                     else if (opcionProvincia <= 0 || opcionProvincia > 24)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un valor válido dentro de las opciones");
+                        Console.WriteLine("Por favor ingrese una de las opciones");
                         Console.WriteLine();
                     }
 
@@ -447,8 +418,13 @@ namespace Trabajo_Practico_4
                 provinciaDeDestinoSeleccionada = provinciaNacional[opcionProvincia];
 
                 Console.WriteLine();
-                Console.WriteLine($"Usted seleccionó la provincia de destino: {provinciaDeDestinoSeleccionada}");
+                Console.WriteLine($"Eligió {provinciaDeDestinoSeleccionada} como DESTINO");
                 Console.WriteLine();
+
+                Console.WriteLine("------Enter para continuar------");
+                Console.ReadKey();//
+
+                Console.Clear();//
             }
 
             else
@@ -456,14 +432,14 @@ namespace Trabajo_Practico_4
                 bool flagG = false;
                 string provinciaDestinoInternacional;
 
-                Console.WriteLine("Por favor ingrese la provincia de destino internacional");
+                Console.WriteLine("Paso 4 - Ingrese la provincia/estado de DESTINO");
 
                 do
                 {
 
                     foreach (KeyValuePair<int, string> opcion in provinciaInternacional)
                     {
-                        Console.WriteLine($"Presione '{opcion.Key}' para la provincia de: {opcion.Value}");
+                        Console.WriteLine($"{opcion.Key} - {opcion.Value}");
                     }
 
                     provinciaDestinoInternacional = Console.ReadLine();
@@ -471,7 +447,7 @@ namespace Trabajo_Practico_4
                     if (string.IsNullOrWhiteSpace(provinciaDestinoInternacional))
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un valor que no sea nulo");
+                        Console.WriteLine("Por favor, no ingrese valores vacíos");
                         Console.WriteLine();
                     }
 
@@ -485,8 +461,9 @@ namespace Trabajo_Practico_4
                     else if (opcionProvincia <= 0 || opcionProvincia > 10)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un valor válido dentro de las opciones");
+                        Console.WriteLine("Por favor ingrese una de las opciones");
                         Console.WriteLine();
+
                     }
 
                     else
@@ -499,34 +476,37 @@ namespace Trabajo_Practico_4
                 provinciaDestinoInternacional = provinciaInternacional[opcionProvincia];
 
                 Console.WriteLine();
-                Console.WriteLine($"Ustéd seleccionó la provincia de origen: {provinciaDestinoInternacional}");
+                Console.WriteLine($"Eligió {provinciaDestinoInternacional} como DESTINO");
                 Console.WriteLine();
+
+                Console.WriteLine("------Enter para continuar------");
+                Console.ReadKey();//
+
+                Console.Clear();//
             }
 
             bool flagA = false;
             bool flagB = false;
             string codigoPostalIngresado;
 
-            Console.WriteLine("Por favor ingrese el codigo postal del lugar de origen");
-
-
+            Console.WriteLine("Paso 5.1 - Ingrese el Código Postal de origen (SOLO NUMEROS)");
+            Console.WriteLine();
 
             do
             {
-
                 codigoPostalIngresado = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valór que no sea nulo");
+                    Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
                 }
 
                 else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un codigo postal valido. ");
+                    Console.WriteLine("Por favor ingrese un Código Postal valido.");
                     Console.WriteLine();
                 }
 
@@ -537,11 +517,13 @@ namespace Trabajo_Practico_4
 
             } while (flagA == false);
 
+         
+
             codigoPostalOrigen = codigoPostalValidado;
 
-            Console.WriteLine("Por favor ingrese el codigo postal del lugar de entrega");
-
-
+            Console.WriteLine();
+            Console.WriteLine("Paso 5.2 - Ingrese el Código Postal de destino (SOLO NUMEROS)");
+            Console.WriteLine();
             do
             {
                 codigoPostalIngresado = Console.ReadLine();
@@ -549,14 +531,14 @@ namespace Trabajo_Practico_4
                 if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valór que no sea nulo");
+                    Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
                 }
 
                 else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un codigo postal valido. ");
+                    Console.WriteLine("Por favor ingrese un Código Postal valido.");
                     Console.WriteLine();
                 }
 
@@ -567,6 +549,11 @@ namespace Trabajo_Practico_4
 
             } while (flagB == false);
 
+            Console.WriteLine("------Enter para continuar------");
+            Console.ReadKey();//
+
+            Console.Clear();//
+
             codigoPostalDestino = codigoPostalValidado;
 
             string direccionDeOrigen;
@@ -574,14 +561,15 @@ namespace Trabajo_Practico_4
 
             do
             {
-                Console.WriteLine("Por favor ingrese la dirección de origen");
+                
+                Console.WriteLine("Paso 6.1 - Ingrese la dirección de ORIGEN");
 
                 direccionDeOrigen = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(direccionDeOrigen))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese una dirección valida");
+                    Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
                 }
 
@@ -592,7 +580,7 @@ namespace Trabajo_Practico_4
 
             } while (flagD == false);
 
-
+           
             direccionOrigen = direccionDeOrigen;
 
             string direccionDeDestino;
@@ -600,14 +588,15 @@ namespace Trabajo_Practico_4
 
             do
             {
-                Console.WriteLine("Por favor ingrese la dirección de destino");
+                Console.WriteLine();
+                Console.WriteLine("Paso 6.2 - Ingrese la dirección de DESTINO");
 
                 direccionDeDestino = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(direccionDeDestino))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese una dirección valida");
+                    Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
                 }
 
@@ -617,6 +606,11 @@ namespace Trabajo_Practico_4
                 }
 
             } while (flagE == false);
+
+            Console.WriteLine("------Enter para continuar------");
+            Console.ReadKey();//
+
+            Console.Clear();//
 
 
             direccionDestino = direccionDeDestino;
@@ -663,12 +657,11 @@ namespace Trabajo_Practico_4
             bool flag1 = false;
             do
             {
-
-
-                Console.WriteLine($"El envío a destino ¿es entrega en domicilio? De ser así, el valor adicional es de $80");
-                Console.WriteLine("¿Desea hacer el envío con entrega a domicilio? Si(S) / No(N)");
+                Console.WriteLine("¿Desea hacer el envío con entrega a domicilio? Su costo adicional es de $80. Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
-
+                /*Console.WriteLine($"¿Quiere que sea entregado a domicilio? De ser así, el valor adicional es de $80");
+                Console.WriteLine();*/
+                Console.WriteLine();
 
                 if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
                 {
@@ -678,27 +671,36 @@ namespace Trabajo_Practico_4
 
                 if (tecla.Key == ConsoleKey.S)
                 {
-                    Console.WriteLine("El envío será realizado al domicilio del destinatario.");
+                    Console.WriteLine("El envío será realizado al domicilio");
                     entregaPuerta = true;
                     flag1 = true;
+                    Console.WriteLine();
                 }
                 else if (tecla.Key == ConsoleKey.N)
                 {
-                    Console.WriteLine("El envío será realizado a la sucursal");
+                    Console.WriteLine("El envío será realizado a la sucursal de DESTINO más cercana");
                     entregaPuerta = false;
                     flag1 = true;
+                    Console.WriteLine();
                 }
 
 
             } while (!flag1);
 
+            Console.WriteLine("------Enter para continuar------");
+            Console.ReadKey();//
+            
+            Console.Clear();//
+
             bool flag2 = false;
             do
             {
 
-                Console.WriteLine($"¿El despacho será realizado desde el domicilio del remitente? De ser así, el valor adicional es de $700");
-                Console.WriteLine("¿Desea hacer el despacho desde el domicilio? Si(S) / No(N)");
+                //Console.WriteLine($"¿El despacho será realizado desde el domicilio del remitente? De ser así, el valor adicional es de $700");
+                
+                Console.WriteLine("¿Desea hacer el despacho desde su domicilio? El valor adicional es de $70. Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
+                Console.WriteLine();
 
                 if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
                 {
@@ -709,27 +711,35 @@ namespace Trabajo_Practico_4
 
                 if (tecla.Key == ConsoleKey.S)
                 {
-                    Console.WriteLine("El despacho será realizado desde el domicilio del remitente");
+                    Console.WriteLine("El despacho será realizado desde su domicilio");
                     retiroPuerta = true;
                     flag2 = true;
+                    Console.WriteLine();
                 }
                 else if (tecla.Key == ConsoleKey.N)
                 {
                     Console.WriteLine("El despacho será realizado desde la sucursal");
                     retiroPuerta = false;
                     flag2 = true;
+                    Console.WriteLine();
                 }
 
 
             } while (!flag2);
 
+            Console.WriteLine("------Enter para continuar------");
+            Console.ReadKey();//
+           
+            Console.Clear();//
+
             bool flag3 = false;
             do
             {
 
-                Console.WriteLine($"¿Desea que el envío sea realizado de forma urgente? El adicional es de 15% sobre el valor total del envío.");
-                Console.WriteLine("¿Desea que el envío sea urgente? Si(S) / No(N)");
+                //Console.WriteLine($"¿Desea que el envío sea realizado de forma urgente? El adicional es de 15% sobre el valor total del envío.");
+                Console.WriteLine("¿Desea que el envío sea urgente? El adicional es de un 15% sobre el valor del envío. Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
+                Console.WriteLine();
 
                 if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
                 {
@@ -743,16 +753,22 @@ namespace Trabajo_Practico_4
                     Console.WriteLine("El envío será realizado de forma urgente");
                     urgente = true;
                     flag3 = true;
+                    Console.WriteLine();
                 }
                 else if (tecla.Key == ConsoleKey.N)
                 {
                     Console.WriteLine("El envío será realizado de forma normal");
                     urgente = false;
                     flag3 = true;
+                    Console.WriteLine();
                 }
 
             } while (!flag3);
 
+            Console.WriteLine("------Enter para continuar------");
+            Console.ReadKey();
+            
+            Console.Clear();//
 
             //llama a método calcular precio
             var precio = new Precios();
@@ -766,7 +782,7 @@ namespace Trabajo_Practico_4
                 bool flag4 = false;
                 do
                 {
-                    Console.WriteLine("Desea confirmar? S/N");
+                    Console.WriteLine("Desea confirmar? Si(S) / No(N)");
                     var tecla = Console.ReadKey(intercept: true);
 
                     if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
@@ -799,7 +815,17 @@ namespace Trabajo_Practico_4
 
         }
 
+        //METODO PARA VALIDAR SIMBOLOS
+        /*  public static bool hasSpecialChar2(string input)
+          {
+              string specialChar = @"|¡!#$%&/()`^=¿?»«@£§€{}.,;:[]+-~`'°<>_";
+              foreach (var item in specialChar)
+              {
+                  if (input.Contains(item)) return true;
+              }
 
+              return false;
+          } */
         public void mostrarDetalle()
         {
             //TODO
@@ -808,4 +834,3 @@ namespace Trabajo_Practico_4
 
     }
 }
-
