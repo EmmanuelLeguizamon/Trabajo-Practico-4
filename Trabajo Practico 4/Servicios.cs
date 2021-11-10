@@ -19,6 +19,7 @@ namespace Trabajo_Practico_4
         public int alcanceEnvío { get; set; }
 
         public int alcanceEnvioInt { get; set; }
+
         public string direccionOrigen { get; set; }
 
         public string direccionDestino { get; set; }
@@ -170,16 +171,6 @@ namespace Trabajo_Practico_4
             "China - Pekin"
         };
 
-
-        //Se debe trabajar en la forma de guardar el input del usuario por la ubicación para recoger el pedido
-        //TODO
-
-        int codigoPostalValidado;
-
-        //Agrupar las provincias en regiones
-        //TODO
-
-
         //Selecciona el usuario el peso del paquete a enviar
 
         int opcionPaquete;
@@ -245,19 +236,15 @@ namespace Trabajo_Practico_4
             Console.Clear();//
         }
 
-
-
         //Selecciona el usuario si desea una entrega nacional o internacional
 
         int opcionEntrega;
         int opcionProvincia;
 
-        //output LOCAL - BULTO MAYOR A 10KG
         public void elegirTipoEntrega()
         {
             bool flag = false;
             string entrega;
-            string tipoEntregaSeleccionada;
 
             do
             {
@@ -486,6 +473,8 @@ namespace Trabajo_Practico_4
             bool flagA = false;
             bool flagB = false;
             string codigoPostalIngresado;
+            int codigoPostalValidadoOrigen = 0;
+            int codigoPostalValidadoDestino = 0;
 
 
 
@@ -503,7 +492,7 @@ namespace Trabajo_Practico_4
                     Console.WriteLine();
                 }
 
-                else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
+                else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidadoOrigen))
                 {
                     Console.WriteLine();
                     Console.WriteLine("Por favor ingrese un Código Postal valido.");
@@ -519,7 +508,7 @@ namespace Trabajo_Practico_4
 
 
 
-            codigoPostalOrigen = codigoPostalValidado;
+            codigoPostalOrigen = codigoPostalValidadoOrigen;
 
 
             do
@@ -536,7 +525,7 @@ namespace Trabajo_Practico_4
                     Console.WriteLine();
                 }
 
-                else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidado))
+                else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidadoDestino))
                 {
                     Console.WriteLine();
                     Console.WriteLine("Por favor ingrese un Código Postal valido.");
@@ -555,7 +544,7 @@ namespace Trabajo_Practico_4
 
             Console.Clear();//
 
-            codigoPostalDestino = codigoPostalValidado;
+            codigoPostalDestino = codigoPostalValidadoDestino;
 
             string direccionDeOrigen;
             bool flagD = false;
@@ -804,7 +793,7 @@ namespace Trabajo_Practico_4
 
             Console.Clear();//
 
-            //llama a método calcular precio
+            //llama a métod calcular precio
             var precio = new Precios();
 
             if (tipoEntregaSeleccionada == "Nacional")
@@ -878,7 +867,7 @@ namespace Trabajo_Practico_4
 
         }
 
-        //METODO PARA VALIDAR SIMBOLOS
+        //METOD PARA VALIDAR SIMBOLOS
         public static bool hasSpecialChar2(string input)
         {
             string specialChar = @"|¡!#$%&/()`^=¿?»«@£§€{}.,;:[]+-~`'°<>_";
@@ -889,10 +878,65 @@ namespace Trabajo_Practico_4
 
             return false;
         }
+
         public void mostrarDetalle()
         {
-            //TODO
-            //función que devuelve el detalle del servicio
+
+            Console.Clear();
+
+            Console.WriteLine($"Resumen servicio: "); //TODO agregar cod seguimiento el detalle
+            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine("Datos generales del servicio: ");
+            Console.WriteLine($"Se enviará un {tipoPaqueteSeleccionado} ");
+            Console.WriteLine($"El servicio a realizar será de alcance: {tipoEntregaSeleccionada}");
+            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Datos de origen: ");
+            Console.WriteLine($"Provincia de origen: {provinciaDeOrigenSeleccionada}");
+            Console.WriteLine($"Dirección de origen: {direccionOrigen}");
+            Console.WriteLine($"Codigo postal de origen: {codigoPostalOrigen}");
+            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Datos de destino: ");
+            Console.WriteLine($"Provincia de destino: {provinciaDeDestinoSeleccionada}");
+            Console.WriteLine($"Dirección de destino: {direccionDestino}");
+            Console.WriteLine($"Codigo postal de destino: {codigoPostalDestino}");
+            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Servicios adicionales: ");
+
+            if (urgente == false && entregaPuerta == false && retiroPuerta == false)
+            {
+                Console.WriteLine("No se solicitó ningún servicio adicional");
+            }
+
+            else
+            {
+                int numero = 0;
+
+                if (urgente == true)
+                {
+                    numero++;
+                    Console.WriteLine($" {numero}. El serivicio será realizado con caracter urgente");
+                }
+                if (entregaPuerta == true)
+                {
+                    numero++;
+                    Console.WriteLine($" {numero}. El servicio se entregará en puerta");
+                }
+                if (retiroPuerta == true)
+                {
+                    numero++;
+                    Console.WriteLine($" {numero}. El servicio se retirará en puerta");
+                }
+            }
+
+            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine("Facturación: ");
+            Console.WriteLine($"El precio final del servicio será: {precioFinal}");
+
+
         }
 
     }
