@@ -44,6 +44,8 @@ namespace Trabajo_Practico_4
 
         public int codSeg { get; set; }
 
+
+
         Dictionary<int, string> tipoEntrega = new Dictionary<int, string>()
         {
             [1] = "Nacional",
@@ -186,7 +188,7 @@ namespace Trabajo_Practico_4
             do
             {
                 Console.WriteLine();
-                Console.WriteLine("Paso 1 - Seleccione el tipo de paquete a entregar y presione ENTER");
+                Console.WriteLine("Paso 1 - Seleccione el número del tipo de paquete a entregar y presione ENTER");
                 Console.WriteLine();
                 foreach (KeyValuePair<int, string> opcion in tipoPaquete)
                 {
@@ -253,7 +255,7 @@ namespace Trabajo_Practico_4
 
             do
             {
-                Console.WriteLine("Paso 2 - Seleccione el tipo de entrega a realizar y presione ENTER");
+                Console.WriteLine("Paso 2 - Seleccione el número del tipo de entrega a realizar y presione ENTER");
                 Console.WriteLine();
 
                 foreach (KeyValuePair<int, string> opcion in tipoEntrega)
@@ -816,7 +818,6 @@ namespace Trabajo_Practico_4
 
             //llama a métod calcular precio
             var precio = new Precios();
-
             var logistica = new Logistica();
 
             if (tipoEntregaSeleccionada == "Nacional")
@@ -848,10 +849,14 @@ namespace Trabajo_Practico_4
                 {
                     Console.WriteLine();
                     Console.WriteLine("El envío fue confirmado exitosamente");
+
+                    Console.WriteLine();
                     logistica.DatosCoddeSeg();
                     logistica.GeneraryMostrarMostrarCS();
                     //MOSTRAR CÓDIGO DE SEGUIMIENTO
                     //GRABAR EL SERVICIO
+                    mostrarDetalle();
+
                     flag4 = true;
                 }
                 else if (tecla.Key == ConsoleKey.N)

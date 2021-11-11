@@ -14,7 +14,7 @@ namespace Trabajo_Practico_4
             var logistica = new Logistica();
             var servicio = new Servicios();
             var estadodeserv = new Estado_de_servicio();
-
+            bool salir;
 
             //Generación de files con casos forzados *NECESARIO que ejecute al principio*
             cliente.DatosClientes();
@@ -46,8 +46,11 @@ namespace Trabajo_Practico_4
               } while (cliente.corporativo == false);
 
             
+            do
+            { 
+                salir=false;
             //Menu, disponible si pasa la validación de cliente
-
+            Console.Clear();
             Console.WriteLine("1.Solicitar un servicio de correspondencia o encomienda.");
             Console.WriteLine("2.Consultar el estado de un servicio.");
             Console.WriteLine("3.Consultar el estado de cuenta.");
@@ -58,19 +61,23 @@ namespace Trabajo_Practico_4
             //Ingreso de opción
             var opcion = Console.ReadLine();
 
+            
             //Switch de opciones con sus clases y métodos
             switch (opcion)
             {
                 case "1":
+                    Console.Clear();
                     servicio.elegirTipoPaquete();
                     servicio.elegirTipoEntrega();
-                    servicio.mostrarDetalle();
+                   
 
                     Console.ReadKey();
                     break;
 
                 case "2":
+                    Console.Clear();
                     Estado_de_servicio.ConsultarEstadoServicio();
+                    Console.ReadKey();
                     break;
 
                 case "3":
@@ -108,16 +115,21 @@ namespace Trabajo_Practico_4
                     break;
 
                 case"4":
+                    Console.Clear();
                     Console.WriteLine("El programa se cerrará.\n");
+                        salir = true;
                     break;
 
                 default:
+                    Console.Clear();
                     Console.WriteLine("No ingresó una opción válida");
                     break;
             }
+                } while(!salir);
+
             
             //Finaliza con la creación de los files en base a la información recopilada durante la ejecución, para que el programa reanude donde dejó
-            //logistica.GenerarFile();
+            logistica.GenerarFile();
 
             Console.ReadLine();
 

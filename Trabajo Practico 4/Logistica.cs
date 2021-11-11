@@ -67,17 +67,18 @@ namespace Trabajo_Practico_4
         public void GeneraryMostrarMostrarCS()
         {
             var cliente = new Cliente();
-            var nrocliente_ = cliente.nrocliente;
+            
             codseguim = codseguim + 1;
 
             ClienteyCodSeg.Add(codseguim, cliente.nrocliente);
 
-            
+            /*
             foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
             {
                 Console.WriteLine(cliente__.Key + "\t" + cliente__.Value);
             }
             Console.ReadKey();
+            */
         }
 
         //ULTIMO EN EJECUTARSE - Genera el file en base a lo que tiene el diccionario. Listo para la próxima ejecución.
@@ -127,7 +128,7 @@ namespace Trabajo_Practico_4
                 
                 else if (MinLenght > codseg || codseg > MaxLenght)
                 {
-                    Console.WriteLine($"\nEl número de cliente corporativo debe contener 5 dígitos. " +
+                    Console.WriteLine($"\nEl código de seguimiento debe contener 5 dígitos." +
                     "\nPresione una tecla para continuar.\n");
                     Console.ReadKey();
                     Console.Clear();
@@ -150,12 +151,8 @@ namespace Trabajo_Practico_4
                             }
                         }
                 
-                
-                
                         lector.Close();
                     }
-                
-                
                 
                     if (!valido)
                     Console.WriteLine("No tenemos ningún servicio registrado con ese número, vuelva a intentarlo");
