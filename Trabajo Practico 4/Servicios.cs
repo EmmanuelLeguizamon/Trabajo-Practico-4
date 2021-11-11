@@ -42,6 +42,8 @@ namespace Trabajo_Practico_4
 
         public double precioFinal { get; set; }
 
+        public int codSeg { get; set; }
+
         Dictionary<int, string> tipoEntrega = new Dictionary<int, string>()
         {
             [1] = "Nacional",
@@ -184,7 +186,7 @@ namespace Trabajo_Practico_4
             do
             {
                 Console.WriteLine();
-                Console.WriteLine("Paso 1 - Seleccione el tipo de paquete a entregar y apriete ENTER");
+                Console.WriteLine("Paso 1 - Seleccione el tipo de paquete a entregar y presione ENTER");
                 Console.WriteLine();
                 foreach (KeyValuePair<int, string> opcion in tipoPaquete)
                 {
@@ -206,7 +208,7 @@ namespace Trabajo_Practico_4
                 else if (!int.TryParse(paquete, out opcionPaquete))
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor numérico");
+                    Console.WriteLine("Por favor ingrese un valor numérico.");
                     Console.WriteLine();
                 }
 
@@ -215,13 +217,14 @@ namespace Trabajo_Practico_4
                     Console.WriteLine();
                     Console.WriteLine("Por favor ingrese una de las opciones");
                     Console.WriteLine();
+
                 }
 
                 else
                 {
                     flag = true;
                 }
-
+                
             } while (flag == false);
 
             tipoPaqueteSeleccionado = tipoPaquete[opcionPaquete];
@@ -250,7 +253,7 @@ namespace Trabajo_Practico_4
 
             do
             {
-                Console.WriteLine("Paso 2 - Seleccione el tipo de entrega a realizar y apriete ENTER");
+                Console.WriteLine("Paso 2 - Seleccione el tipo de entrega a realizar y presione ENTER");
                 Console.WriteLine();
 
                 foreach (KeyValuePair<int, string> opcion in tipoEntrega)
@@ -307,7 +310,7 @@ namespace Trabajo_Practico_4
             bool flagC = false;
             string provinciaDeOrigen;
 
-            Console.WriteLine("Paso 3 - Seleccione la provincia de ORIGEN y apriete ENTER");
+            Console.WriteLine("Paso 3 - Seleccione la provincia de ORIGEN y presione ENTER");
             Console.WriteLine();
             do
             {
@@ -362,7 +365,7 @@ namespace Trabajo_Practico_4
                 bool flagF = false;
                 string provinciaDeDestino;
 
-                Console.WriteLine("Paso 4 - Seleccione la provincia/estado de DESTINO y apriete ENTER");
+                Console.WriteLine("Paso 4 - Seleccione la provincia/estado de DESTINO y presione ENTER");
                 Console.WriteLine();
                 do
                 {
@@ -419,7 +422,7 @@ namespace Trabajo_Practico_4
                 bool flagG = false;
 
 
-                Console.WriteLine("Paso 4 - Seleccione el DESTINO y apriete ENTER");
+                Console.WriteLine("Paso 4 - Seleccione el DESTINO y presione ENTER");
 
                 do
                 {
@@ -482,7 +485,7 @@ namespace Trabajo_Practico_4
 
             do
             {
-                Console.WriteLine("Paso 5.1 - Ingrese el Código Postal de origen (SOLO NUMEROS) y apriete ENTER");
+                Console.WriteLine("Paso 5.1 - Ingrese el Código Postal de origen (SOLO NUMEROS) y presione ENTER");
 
                 codigoPostalIngresado = Console.ReadLine();
                 Console.WriteLine();
@@ -495,6 +498,12 @@ namespace Trabajo_Practico_4
                 }
 
                 else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidadoOrigen))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un Código Postal valido.");
+                    Console.WriteLine();
+                }
+                else if (codigoPostalValidadoOrigen <= 0)
                 {
                     Console.WriteLine();
                     Console.WriteLine("Por favor ingrese un Código Postal valido.");
@@ -514,9 +523,9 @@ namespace Trabajo_Practico_4
 
 
             do
-            {
+            {   
                 Console.WriteLine();
-                Console.WriteLine("Paso 5.2 - Ingrese el Código Postal de destino (SOLO NUMEROS) y apriete ENTER");
+                Console.WriteLine("Paso 5.2 - Ingrese el Código Postal de destino (SOLO NUMEROS) y presione ENTER");
 
                 codigoPostalIngresado = Console.ReadLine();
                 Console.WriteLine();
@@ -528,6 +537,12 @@ namespace Trabajo_Practico_4
                 }
 
                 else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidadoDestino))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Por favor ingrese un Código Postal valido.");
+                    Console.WriteLine();
+                }
+                else if (codigoPostalValidadoDestino <= 0)
                 {
                     Console.WriteLine();
                     Console.WriteLine("Por favor ingrese un Código Postal valido.");
@@ -554,7 +569,7 @@ namespace Trabajo_Practico_4
             do
             {
 
-                Console.WriteLine("Paso 6.1 - Ingrese la dirección de ORIGEN y apriete ENTER");
+                Console.WriteLine("Paso 6.1 - Ingrese la dirección de ORIGEN y presione ENTER");
 
                 direccionDeOrigen = Console.ReadLine();
                 Console.WriteLine();
@@ -589,7 +604,7 @@ namespace Trabajo_Practico_4
             do
             {
                 Console.WriteLine();
-                Console.WriteLine("Paso 6.2 - Ingrese la dirección de DESTINO y apriete ENTER");
+                Console.WriteLine("Paso 6.2 - Ingrese la dirección de DESTINO y presione ENTER");
 
                 direccionDeDestino = Console.ReadLine();
                 Console.WriteLine();
@@ -802,7 +817,7 @@ namespace Trabajo_Practico_4
             //llama a métod calcular precio
             var precio = new Precios();
 
-            var codigoServ = new Logistica();
+            var logistica = new Logistica();
 
             if (tipoEntregaSeleccionada == "Nacional")
             {
@@ -833,12 +848,8 @@ namespace Trabajo_Practico_4
                 {
                     Console.WriteLine();
                     Console.WriteLine("El envío fue confirmado exitosamente");
-
-                    codigoServ.GeneraryMostrarMostrarCS();
-
-
-
-
+                    logistica.DatosCoddeSeg();
+                    logistica.GeneraryMostrarMostrarCS();
                     //MOSTRAR CÓDIGO DE SEGUIMIENTO
                     //GRABAR EL SERVICIO
                     flag4 = true;
@@ -884,6 +895,11 @@ namespace Trabajo_Practico_4
 
         public void mostrarDetalle()
         {
+            Console.Clear();
+            var logistica = new Logistica();
+
+            //logistica.GeneraryMostrarMostrarCS();
+            /*{logistica.codseguim} */
 
             Console.WriteLine($"Resumen servicio: "); //TODO agregar cod seguimiento el detalle
             Console.WriteLine("-------------------------------------------------------");
@@ -936,7 +952,7 @@ namespace Trabajo_Practico_4
             Console.WriteLine();
             Console.WriteLine("Facturación: ");
             Console.WriteLine($"El precio final del servicio será: {precioFinal}");
-
+            Console.ReadKey();
 
         }
 

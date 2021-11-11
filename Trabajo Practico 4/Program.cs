@@ -17,20 +17,19 @@ namespace Trabajo_Practico_4
 
 
             //Generación de files con casos forzados *NECESARIO que ejecute al principio*
-            // cliente.DatosClientes();
-            //logistica.DatosCoddeSeg();
-
-
-
+            cliente.DatosClientes();
+            logistica.DatosCoddeSeg();
+            Estado_de_servicio.SolicitudesDeServicio();
+            
             //Validación del nro de cliente (consulta con clase cliente unicamente)
-            /*  do
+            do
               {
                   cliente.corporativo = false;
                   cliente.Validacion();
 
                   if (cliente.corporativo == false)
                   {
-                      Console.WriteLine("\nEl CUIT ingresado no forma parte de nuestra base de clientes corporativos. Intente nuevamente." +
+                      Console.WriteLine("\nEl número de cliente ingresado no forma parte de nuestra base de clientes corporativos. Intente nuevamente." +
                           "\nPresione una tecla para continuar.\n");
                   }
                   else
@@ -43,9 +42,10 @@ namespace Trabajo_Practico_4
                   Console.ReadLine();
                   Console.Clear();
 
-              } while (cliente.corporativo == false);*/
 
+              } while (cliente.corporativo == false);
 
+            
             //Menu, disponible si pasa la validación de cliente
 
             Console.WriteLine("1.Solicitar un servicio de correspondencia o encomienda.");
@@ -62,18 +62,19 @@ namespace Trabajo_Practico_4
             switch (opcion)
             {
                 case "1":
-                    servicio.mostrarDetalle();
                     servicio.elegirTipoPaquete();
                     servicio.elegirTipoEntrega();
+                    servicio.mostrarDetalle();
 
                     Console.ReadKey();
                     break;
 
-                /*case "2":
+                case "2":
                     Estado_de_servicio.ConsultarEstadoServicio();
-                    break;*/
+                    break;
 
                 case "3":
+                    Console.Clear();
                     //ConsultarCuenta();
                     //muestra 2 opciones disponibles
                     Console.WriteLine("1.Ver historial de servicios.");
@@ -84,8 +85,8 @@ namespace Trabajo_Practico_4
                     switch (opcion)
                     {
                         case "1":
+                            Console.Clear();
                             // genera file de historial de solicitudes
-                            Estado_de_servicio.SolicitudesDeServicio();
                             estadodeserv.ConsultarHistorialCuenta(cliente.nrocliente);
                             break;
 
@@ -106,17 +107,17 @@ namespace Trabajo_Practico_4
                     }
                     break;
 
+                case"4":
+                    Console.WriteLine("El programa se cerrará.\n");
+                    break;
 
                 default:
                     Console.WriteLine("No ingresó una opción válida");
                     break;
             }
-
-
+            
             //Finaliza con la creación de los files en base a la información recopilada durante la ejecución, para que el programa reanude donde dejó
-            // logistica.GenerarFile();*/
-
-
+            //logistica.GenerarFile();
 
             Console.ReadLine();
 

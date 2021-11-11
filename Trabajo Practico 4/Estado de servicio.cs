@@ -20,16 +20,16 @@ namespace Trabajo_Practico_4
                 using (var writer = new StreamWriter(@"SolicitudesDeServicio.txt"))
                 {
                     //formato: cuit cliente; cod servicio; estado; monto
-                    writer.WriteLine("40395;10589;recibido;3000");
-                    writer.WriteLine("40395;10432;tránsito;4500");
-                    writer.WriteLine("40395;10946;cerrado;1800");
-                    writer.WriteLine("18285;10049;tránsito;1200");
-                    writer.WriteLine("18285;10501;tránsito;7000");
-                    writer.WriteLine("18285;10689;cerrado;2000");
-                    writer.WriteLine("14330;10054;recibido;6000");
-                    writer.WriteLine("14330;11194;recibido;1200");
-                    writer.WriteLine("48407;11052;cerrado;3000");
-                    writer.WriteLine("48407;10784;tránsito;1800");
+                    writer.WriteLine("40395;10589;Recibido;3000");
+                    writer.WriteLine("40395;10432;Tránsito;4500");
+                    writer.WriteLine("40395;10946;Cerrado;1800");
+                    writer.WriteLine("18285;10049;Tránsito;1200");
+                    writer.WriteLine("18285;10501;Tránsito;7000");
+                    writer.WriteLine("18285;10689;Cerrado;2000");
+                    writer.WriteLine("14330;10054;Recibido;6000");
+                    writer.WriteLine("14330;11194;Recibido;1200");
+                    writer.WriteLine("48407;11052;Cerrado;3000");
+                    writer.WriteLine("48407;10784;Tránsito;1800");
 
                     writer.Close();
                 }
@@ -139,14 +139,29 @@ namespace Trabajo_Practico_4
 
         public static void ConsultarEstadoServicio()
         {
-            Console.WriteLine("Ingrese el código de seguimiento. (5 dígitos, sin guiones ni espacios)");
-            int codigo = Logistica.ValidarCodigoIngresado(Console.ReadLine());
+            string estado_servicio = "";
+            int codigo = Logistica.ValidarCodigoIngresado();
 
             //falta recorrer txt y escribir el estado
-
-            Console.WriteLine($"Estado del servicio {codigo}:       ");
-
+            using (StreamReader sr = new StreamReader(@"SolicitudesDeServicio.txt"))
+            {
+            string line;
+                        
+            while ((line = sr.ReadLine()) != null)
+            {
+            if (line.Contains(codigo.ToString()))
+            {
+            string[] arraylinea = line.Split(';');
+            estado_servicio = arraylinea[2];
+            }
+            }
+            
+            sr.Close();
+            }
+            
+            Console.WriteLine($"Estado del servicio {codigo}: {estado_servicio}");
+            
         }
-
+       
     }
 }

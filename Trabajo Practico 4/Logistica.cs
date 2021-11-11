@@ -9,21 +9,9 @@ namespace Trabajo_Practico_4
 {
     class Logistica
     {
-        private int CodSeguim;
-        public int codseguim
-        {
-            get
-            {
-                return CodSeguim;
-            }
-            set
-            {
-                CodSeguim = value;
+        public int codseguim { get;set;}
 
-            }
-        }
         Dictionary<int, int> ClienteyCodSeg = new Dictionary<int, int>();
-
 
         //PRIMERO EN EJECTARSE - En caso de que no exista, genera un file con casos forzados. Siempre va a iniciar cargando lo que lea del file en un diccionario.
         public void DatosCoddeSeg() //Extraer del .txt los datos
@@ -34,10 +22,16 @@ namespace Trabajo_Practico_4
                 using (var sw = new StreamWriter(@"CodigosdeSeguimiento.txt"))
                 {
                     //Formato = Cod seguim (KEY), cliente
-                    sw.WriteLine("10001,40395");
-                    sw.WriteLine("10002,18285");
-                    sw.WriteLine("10003,14330");
-                    sw.WriteLine("10004,48407");
+                    sw.WriteLine("10589,40395");
+                    sw.WriteLine("10432,40395");
+                    sw.WriteLine("10946,40395");
+                    sw.WriteLine("10049,18285");
+                    sw.WriteLine("10501,18285");
+                    sw.WriteLine("10689,18285");
+                    sw.WriteLine("10054,14330");
+                    sw.WriteLine("11194,14330");
+                    sw.WriteLine("11052,48407");
+                    sw.WriteLine("10784,48407");
 
                     sw.Close();
                 }
@@ -61,10 +55,10 @@ namespace Trabajo_Practico_4
 
 
                 // verificación de la tabla
-                foreach (KeyValuePair<int, int> cliente_ in ClienteyCodSeg)
+                /*foreach (KeyValuePair<int, int> cliente_ in ClienteyCodSeg)
                 {
                     Console.WriteLine(cliente_.Key + "\t" + cliente_.Value);
-                }
+                }*/
             }
 
         }
@@ -72,19 +66,18 @@ namespace Trabajo_Practico_4
         //Genera un nuevo código en base al último generado. Util en clase Servicios.
         public void GeneraryMostrarMostrarCS()
         {
-            var cliente_class = new Cliente();
-
+            var cliente = new Cliente();
+            var nrocliente_ = cliente.nrocliente;
             codseguim = codseguim + 1;
 
-            Console.WriteLine($"El código de seguimiento generado es: {codseguim}");
+            ClienteyCodSeg.Add(codseguim, cliente.nrocliente);
 
-            ClienteyCodSeg.Add(codseguim, cliente_class.nrocliente);
-
+            
             foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
             {
                 Console.WriteLine(cliente__.Key + "\t" + cliente__.Value);
             }
-
+            Console.ReadKey();
         }
 
         //ULTIMO EN EJECUTARSE - Genera el file en base a lo que tiene el diccionario. Listo para la próxima ejecución.
@@ -104,104 +97,76 @@ namespace Trabajo_Practico_4
         }
 
 
-        //en class Logistica (Cyn)
-
-        public static int ValidarCodigoIngresado(string codigo)
+        public static int ValidarCodigoIngresado()
         {
             bool valido = false;
             int codseg;
             string estado;
             const int MinLenght = 10000;
             const int MaxLenght = 99999;
-            var cliente_class = new Cliente();
-
+            var cliente = new Cliente();
+            
+            
+            
             do
             {
+                Console.WriteLine("Ingrese el código de seguimiento. (5 dígitos, sin guiones ni espacios)");
+                string codigo = Console.ReadLine();
+                
+                
+                
                 if (!int.TryParse(codigo, out codseg))
                 {
                     Console.WriteLine("\nNo ha ingresado un código de seguimiento válido (5 dígitos, sin guiones ni espacios)" +
-                        "\nPresione una tecla para continuar.\n");
+                    "\nPresione una tecla para continuar.\n");
                     Console.ReadKey();
                     Console.Clear();
                 }
-
+                
+                
+                
                 else if (MinLenght > codseg || codseg > MaxLenght)
                 {
                     Console.WriteLine($"\nEl número de cliente corporativo debe contener 5 dígitos. " +
-                         "\nPresione una tecla para continuar.\n");
+                    "\nPresione una tecla para continuar.\n");
                     Console.ReadKey();
                     Console.Clear();
                 }
-
+                
+                
+                
                 else
                 {
-                    using (StreamReader lector = new StreamReader(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
+                    using (StreamReader lector = new StreamReader(@"CodigosdeSeguimiento.txt"))
                     {
                         string line;
-
+                        
                         while ((line = lector.ReadLine()) != null)
                         {
-                            string combined = (string.Format(codigo, ",", cliente_class.nrocliente));
+                            string combined = (string.Format(codigo, "," ,cliente.nrocliente));
                             if (line.Contains(combined))
                             {
-                                Console.WriteLine("Codigo valido");
                                 valido = true;
                             }
                         }
-
+                
+                
+                
                         lector.Close();
                     }
+                
+                
+                
+                    if (!valido)
+                    Console.WriteLine("No tenemos ningún servicio registrado con ese número, vuelva a intentarlo");
                 }
-
+                
+                
+                
             } while (valido == false);
-
-
-
-            if (codseg % 2 == 0)
-            {
-                estado = "Recibido: orden de servicio iniciada";
-
-            }
-            else if (codseg % 3 == 0)
-            {
-                estado = "Recibido: orden de servicio iniciada\n" +
-                    "En tránsito: entregado en sucursal";
-
-            }
-            else if (codseg % 5 == 0)
-            {
-                estado = "Recibido: orden de servicio iniciada\n" +
-                    "En tránsito: en centro de distribución";
-
-            }
-            else if (codseg % 7 == 0)
-            {
-                estado = "Recibido: orden de servicio iniciada\n" +
-                    "En tránsito: en sucursal para entrega";
-
-            }
-            else if (codseg % 11 == 0)
-            {
-                estado = "Recibido: orden de servicio iniciada\n" +
-                    "En tránsito: en distribución";
-            }
-            else
-            {
-                estado = "Recibido: orden de servicio iniciada\n" +
-                    "En tránsito: en centro de distribución\n" +
-                    "En tránsito: entregado en sucursal\n" +
-                    "En tránsito: en sucursal para entrega\n" +
-                    "Cerrada: entregado";
-
-            }
-
+                       
             return codseg;
-            //return estado;
+                    
         }
-        //Recibido: orden de servicio iniciada
-        //En tránsito: entregado en sucursal/retirado, en centro de distribución, en sucursal para entrega, en distribución
-        //Cerrada: entregado
-        //6: mod 2, mod 3, mod 5, mod 7, mod 11, mod 13
-
     }
 }

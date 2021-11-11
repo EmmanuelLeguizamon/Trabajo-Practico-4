@@ -10,19 +10,7 @@ namespace Trabajo_Practico_4
     class Cliente
     {
 
-        private int NroCliente;
-
-        public int nrocliente
-        {
-            get
-            {
-                return NroCliente;
-            }
-            set
-            {
-                NroCliente = value;
-            }
-        }
+        public int nrocliente {get; set;}
 
         private bool Corporativo = false;
         public bool corporativo
@@ -42,6 +30,7 @@ namespace Trabajo_Practico_4
             //Validación del tipo de dato númerico. Se almacena si es int
             string input;
             bool valido = false;
+
             const int MinLenght = 10000;
             const int MaxLenght = 99999;
             do
@@ -49,14 +38,14 @@ namespace Trabajo_Practico_4
                 Console.WriteLine("Ingrese su número de cliente corporativo. (5 dígitos, sin guiones ni espacios)");
                 input = Console.ReadLine();
 
-                if (!int.TryParse(input, out NroCliente))
+                if (!int.TryParse(input, out int Nrocliente))
                 {
                     Console.WriteLine("\nNo ha ingresado un número de cliente corporativo válido (5 dígitos, sin guiones ni espacios)" +
                         "\nPresione una tecla para continuar.\n");
                     Console.ReadKey();
                     Console.Clear();
                 }
-                else if (MinLenght > NroCliente || NroCliente > MaxLenght)
+                else if (MinLenght > Nrocliente || Nrocliente > MaxLenght)
                 {
                     Console.WriteLine($"\nEl número de cliente corporativo debe ser positivo y contener 5 dígitos. " +
                         "\nPresione una tecla para continuar.\n");
@@ -66,7 +55,10 @@ namespace Trabajo_Practico_4
                 else
                 {
                     valido = true;
+                    nrocliente = Convert.ToInt32(input);
                 }
+                
+
             } while (valido == false);
 
             //Validación en archivo del ingreso en el paso anterior
