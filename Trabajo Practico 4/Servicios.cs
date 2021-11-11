@@ -920,7 +920,7 @@ namespace Trabajo_Practico_4
             Console.WriteLine("-------------------------------------------------------");
             Console.WriteLine();
             Console.WriteLine("Datos de destino: ");
-            Console.WriteLine($"Provincia de destino: {provinciaDeDestinoSeleccionada}");
+            Console.WriteLine($"Provincia de destino: {provinciaDeDestinoSeleccionada}{provinciaDestinoInternacional}");
             Console.WriteLine($"Dirección de destino: {direccionDestino}");
             Console.WriteLine($"Codigo postal de destino: {codigoPostalDestino}");
             Console.WriteLine("-------------------------------------------------------");
