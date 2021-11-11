@@ -68,8 +68,8 @@ namespace Trabajo_Practico_4
                 case "1":
                     Console.Clear();
                     servicio.elegirTipoPaquete();
-                    servicio.elegirTipoEntrega();
-                   
+                    servicio.elegirTipoEntrega(cliente.nrocliente);
+                    logistica.GenerarFile();
 
                     Console.ReadKey();
                     break;
@@ -129,7 +129,7 @@ namespace Trabajo_Practico_4
 
             
             //Finaliza con la creación de los files en base a la información recopilada durante la ejecución, para que el programa reanude donde dejó
-            logistica.GenerarFile();
+            
 
             Console.ReadLine();
 

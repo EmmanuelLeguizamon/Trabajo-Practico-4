@@ -83,7 +83,7 @@ namespace Trabajo_Practico_4
         public void DatosClientes()
         {
             //Verifico si el file existe, en caso de no existir se crea.
-            if (!File.Exists(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt"))
+            if (!File.Exists(@"ClientesCorporativos.txt"))
             {
                 using (var writer = new StreamWriter(@"ClientesCorporativos.txt"))
                 {

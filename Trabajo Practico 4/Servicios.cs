@@ -248,7 +248,7 @@ namespace Trabajo_Practico_4
         int opcionEntrega;
         int opcionProvincia;
 
-        public void elegirTipoEntrega()
+        public void elegirTipoEntrega(int nrocliente)
         {
             bool flag = false;
             string entrega;
@@ -852,7 +852,7 @@ namespace Trabajo_Practico_4
 
                     Console.WriteLine();
                     logistica.DatosCoddeSeg();
-                    logistica.GeneraryMostrarMostrarCS();
+                    logistica.GeneraryMostrarMostrarCS(nrocliente);
                     //MOSTRAR CÓDIGO DE SEGUIMIENTO
                     //GRABAR EL SERVICIO
                     mostrarDetalle();

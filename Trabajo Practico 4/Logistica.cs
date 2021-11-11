@@ -64,13 +64,16 @@ namespace Trabajo_Practico_4
         }
 
         //Genera un nuevo código en base al último generado. Util en clase Servicios.
-        public void GeneraryMostrarMostrarCS()
+        public void GeneraryMostrarMostrarCS(int nrocliente)
         {
-            var cliente = new Cliente();
+            //var cliente = new Cliente();
             
             codseguim = codseguim + 1;
 
-            ClienteyCodSeg.Add(codseguim, cliente.nrocliente);
+            ClienteyCodSeg.Add(codseguim, nrocliente);
+
+            Console.WriteLine($"El  numero de seguimiento es {codseguim} ");
+            Console.ReadKey();
 
             /*
             foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
