@@ -113,7 +113,7 @@ namespace Trabajo_Practico_4
             {
                 precioAlcance = 450;
                 precioBruto += precioAlcance;
-                Console.WriteLine($"2)Envío en distina región: ${precioAlcance}");
+                Console.WriteLine($"2)Envío en distinta región: ${precioAlcance}");
                 Console.WriteLine();
             }
             //  Console.WriteLine($"El valor del {tipoPaquete} y su alcance es: {precioBruto}");
@@ -219,7 +219,7 @@ namespace Trabajo_Practico_4
             {
                 precioAlcance = 450;
                 precioBruto += precioAlcance;
-                Console.WriteLine($"2)Envío en distina región: ${precioAlcance}");
+                Console.WriteLine($"2)Envío en distinta región: ${precioAlcance}");
                 Console.WriteLine();
             }
 
@@ -303,3 +303,4 @@ namespace Trabajo_Practico_4
 
     }
 }
+

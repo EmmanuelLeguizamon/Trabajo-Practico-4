@@ -10,7 +10,7 @@ namespace Trabajo_Practico_4
     class Facturacion
     {
 
-        public void DatosFacturacion()
+        public static void DatosFacturacion()
         {
             //Verificao si el file existe, en caso de no existir se crea.
             if (!File.Exists(@"Facturas.txt"))
@@ -32,7 +32,7 @@ namespace Trabajo_Practico_4
         }
 
         //devuelve facturación por cliente
-        public static List<string> ConsultarFacturacionCliente(uint cuit)
+        public static List<string> ConsultarFacturacionCliente(int cuit)
         {
             List<string> FacturasCliente = new List<string>();
 

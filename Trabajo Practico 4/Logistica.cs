@@ -29,9 +29,9 @@ namespace Trabajo_Practico_4
         public void DatosCoddeSeg() //Extraer del .txt los datos
         {
             //Verifico si el file existe, en caso de no existir se crea.
-            if (!File.Exists(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
+            if (!File.Exists(@"CodigosdeSeguimiento.txt"))
             {
-                using (var sw = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
+                using (var sw = new StreamWriter(@"CodigosdeSeguimiento.txt"))
                 {
                     //Formato = Cod seguim (KEY), cliente
                     sw.WriteLine("10001,40395");
@@ -43,7 +43,7 @@ namespace Trabajo_Practico_4
                 }
             }
 
-            using (StreamReader sr = new StreamReader(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
+            using (StreamReader sr = new StreamReader(@"CodigosdeSeguimiento.txt"))
             {
                 string line;
                 string[] data;
@@ -90,7 +90,7 @@ namespace Trabajo_Practico_4
         //ULTIMO EN EJECUTARSE - Genera el file en base a lo que tiene el diccionario. Listo para la próxima ejecución.
         public void GenerarFile()
         {
-            using (var sw = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\CodigosdeSeguimiento.txt"))
+            using (var sw = new StreamWriter(@"CodigosdeSeguimiento.txt"))
             {
                 //Formato = Nro cliente, Cod seguim
                 foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)

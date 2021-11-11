@@ -183,6 +183,7 @@ namespace Trabajo_Practico_4
 
             do
             {
+                Console.WriteLine();
                 Console.WriteLine("Paso 1 - Seleccione el tipo de paquete a entregar y apriete ENTER");
                 Console.WriteLine();
                 foreach (KeyValuePair<int, string> opcion in tipoPaquete)
@@ -235,6 +236,7 @@ namespace Trabajo_Practico_4
 
             Console.Clear();//
         }
+
 
         //Selecciona el usuario si desea una entrega nacional o internacional
 
@@ -562,11 +564,13 @@ namespace Trabajo_Practico_4
                     Console.WriteLine();
                     Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
+                    continue;
                 }
 
                 if (flag = hasSpecialChar2(direccionDeOrigen))
                 {
                     Console.WriteLine("La dirección no debe contener símbolos");
+                    continue;
                 }
 
                 else
@@ -595,11 +599,13 @@ namespace Trabajo_Practico_4
                     Console.WriteLine();
                     Console.WriteLine("Por favor, no ingrese valores vacíos");
                     Console.WriteLine();
+                    continue;
                 }
 
                 if (flag = hasSpecialChar2(direccionDeDestino))
                 {
                     Console.WriteLine("La dirección no debe contener símbolos");
+                    continue;
                 }
 
                 else
@@ -751,15 +757,15 @@ namespace Trabajo_Practico_4
             } while (!flag2);
 
             Console.WriteLine("------Enter para continuar------");
-            Console.ReadKey();//
+            Console.ReadKey();
 
-            Console.Clear();//
+            Console.Clear();
 
             bool flag3 = false;
             do
             {
 
-                //Console.WriteLine($"¿Desea que el envío sea realizado de forma urgente? El adicional es de 15% sobre el valor total del envío.");
+
                 Console.WriteLine("Paso 9 - ¿Desea que el envío sea urgente? El adicional es de un 15% sobre el valor del envío. Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
                 Console.WriteLine();
@@ -791,10 +797,12 @@ namespace Trabajo_Practico_4
             Console.WriteLine("------Enter para continuar------");
             Console.ReadKey();
 
-            Console.Clear();//
+            Console.Clear();
 
             //llama a métod calcular precio
             var precio = new Precios();
+
+            var codigoServ = new Logistica();
 
             if (tipoEntregaSeleccionada == "Nacional")
             {
@@ -825,6 +833,12 @@ namespace Trabajo_Practico_4
                 {
                     Console.WriteLine();
                     Console.WriteLine("El envío fue confirmado exitosamente");
+
+                    codigoServ.GeneraryMostrarMostrarCS();
+
+
+
+
                     //MOSTRAR CÓDIGO DE SEGUIMIENTO
                     //GRABAR EL SERVICIO
                     flag4 = true;
@@ -867,22 +881,9 @@ namespace Trabajo_Practico_4
 
         }
 
-        //METOD PARA VALIDAR SIMBOLOS
-        public static bool hasSpecialChar2(string input)
-        {
-            string specialChar = @"|¡!#$%&/()`^=¿?»«@£§€{}.,;:[]+-~`'°<>_";
-            foreach (var item in specialChar)
-            {
-                if (input.Contains(item)) return true;
-            }
-
-            return false;
-        }
 
         public void mostrarDetalle()
         {
-
-            Console.Clear();
 
             Console.WriteLine($"Resumen servicio: "); //TODO agregar cod seguimiento el detalle
             Console.WriteLine("-------------------------------------------------------");
@@ -939,6 +940,18 @@ namespace Trabajo_Practico_4
 
         }
 
+
+        //METOD PARA VALIDAR SIMBOLOS
+        public static bool hasSpecialChar2(string input)
+        {
+            string specialChar = @"|¡!#$%&/()`^=¿?»«@£§€{}.,;:[]+-~`'°<>_";
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item)) return true;
+            }
+
+            return false;
+        }
     }
 }
 

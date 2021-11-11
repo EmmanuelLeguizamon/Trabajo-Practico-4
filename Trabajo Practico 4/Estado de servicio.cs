@@ -15,7 +15,7 @@ namespace Trabajo_Practico_4
         public static void SolicitudesDeServicio()
         {
             //Verifico si el file existe, en caso de no existir se crea.
-            if (!File.Exists(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\SolicitudesDeServicio.txt"))
+            if (!File.Exists(@"SolicitudesDeServicio.txt"))
             {
                 using (var writer = new StreamWriter(@"SolicitudesDeServicio.txt"))
                 {
@@ -37,7 +37,7 @@ namespace Trabajo_Practico_4
         }
 
         //devuelve historial de servicios por cliente
-        public static List<string> ConsultarServiciosCliente(uint cuit)
+        public static List<string> ConsultarServiciosCliente(int cuit)
         {
             List<string> ServiciosCliente = new List<string>();
 
@@ -63,7 +63,7 @@ namespace Trabajo_Practico_4
         //en class
 
         //muestra historial de servicios
-        public void ConsultarHistorialCuenta(uint cuit)
+        public void ConsultarHistorialCuenta(int cuit)
         {
             Console.WriteLine($"Historial de servicios del cliente {cuit}:");
 
@@ -77,7 +77,7 @@ namespace Trabajo_Practico_4
         }
 
         //muestra saldo deudor de la cuenta
-        public void ConsultarSaldoCuenta(uint cuit)
+        public void ConsultarSaldoCuenta(int cuit)
         {
             Console.WriteLine($"Servicios del cliente {cuit}:");
             int servicios_pagos = 0;

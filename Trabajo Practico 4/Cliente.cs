@@ -70,7 +70,7 @@ namespace Trabajo_Practico_4
             } while (valido == false);
 
             //Validación en archivo del ingreso en el paso anterior
-            using (StreamReader sr = new StreamReader(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt"))
+            using (StreamReader sr = new StreamReader(@"ClientesCorporativos.txt"))
             {
                 string line;
                 string record = nrocliente.ToString();
@@ -93,7 +93,7 @@ namespace Trabajo_Practico_4
             //Verifico si el file existe, en caso de no existir se crea.
             if (!File.Exists(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt"))
             {
-                using (var writer = new StreamWriter(@"C:\Users\Melu\Source\Repos\Trabajo-Practico-4\ClientesCorporativos.txt"))
+                using (var writer = new StreamWriter(@"ClientesCorporativos.txt"))
                 {
                     writer.WriteLine("40395");
                     writer.WriteLine("18285");
