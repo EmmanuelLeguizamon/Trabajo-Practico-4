@@ -19,117 +19,114 @@ namespace Trabajo_Practico_4
             //Generación de files con casos forzados *NECESARIO que ejecute al principio*
             cliente.DatosClientes();
             logistica.DatosCoddeSeg();
+            servicio.LeerDestinos();
             Estado_de_servicio.SolicitudesDeServicio();
-            
+
             //Validación del nro de cliente (consulta con clase cliente unicamente)
             do
-              {
-                  cliente.corporativo = false;
-                  cliente.Validacion();
-
-                  if (cliente.corporativo == false)
-                  {
-                      Console.WriteLine("\nEl número de cliente ingresado no forma parte de nuestra base de clientes corporativos. Intente nuevamente." +
-                          "\nPresione una tecla para continuar.\n");
-                  }
-                  else
-                  {
-                      Console.Clear();
-                      Console.WriteLine("----------------------------");
-                      Console.WriteLine($"| Bienvenido cliente {cliente.nrocliente} |");
-                      Console.WriteLine("----------------------------");
-                  }
-                  Console.ReadLine();
-                  Console.Clear();
-
-
-              } while (cliente.corporativo == false);
-
-            
-            do
-            { 
-                salir=false;
-            //Menu, disponible si pasa la validación de cliente
-            Console.Clear();
-            Console.WriteLine("1.Solicitar un servicio de correspondencia o encomienda.");
-            Console.WriteLine("2.Consultar el estado de un servicio.");
-            Console.WriteLine("3.Consultar el estado de cuenta.");
-            Console.WriteLine("4.Finalizar");
-            Console.WriteLine("---------------------------------------------------------");
-            Console.WriteLine("Ingrese su opción");
-
-            //Ingreso de opción
-            var opcion = Console.ReadLine();
-
-            
-            //Switch de opciones con sus clases y métodos
-            switch (opcion)
             {
-                case "1":
+                cliente.corporativo = false;
+                cliente.Validacion();
+
+                if (cliente.corporativo == false)
+                {
+                    Console.WriteLine("\nEl número de cliente ingresado no forma parte de nuestra base de clientes corporativos. Intente nuevamente." +
+                        "\nPresione una tecla para continuar.\n");
+                }
+                else
+                {
                     Console.Clear();
-                    servicio.elegirTipoPaquete();
-                    servicio.elegirTipoEntrega(cliente.nrocliente);
-                    logistica.GenerarFile();
+                    Console.WriteLine("----------------------------");
+                    Console.WriteLine($"| Bienvenido cliente {cliente.nrocliente} |");
+                    Console.WriteLine("----------------------------");
+                }
+                Console.ReadLine();
+                Console.Clear();
 
-                    Console.ReadKey();
-                    break;
 
-                case "2":
-                    Console.Clear();
-                    Estado_de_servicio.ConsultarEstadoServicio();
-                    Console.ReadKey();
-                    break;
+            } while (cliente.corporativo == false);
 
-                case "3":
-                    Console.Clear();
-                    //ConsultarCuenta();
-                    //muestra 2 opciones disponibles
-                    Console.WriteLine("1.Ver historial de servicios.");
-                    Console.WriteLine("2.Consultar saldo de cuenta.");
-                    Console.WriteLine("3.Volver atrás.");
 
-                    opcion = Console.ReadLine();
-                    switch (opcion)
-                    {
-                        case "1":
-                            Console.Clear();
-                            // genera file de historial de solicitudes
-                            estadodeserv.ConsultarHistorialCuenta(cliente.nrocliente);
-                            break;
+            do
+            {
+                salir = false;
+                //Menu, disponible si pasa la validación de cliente
+                Console.Clear();
+                Console.WriteLine("\n MENÚ PRINCIPAL \n");
+                Console.WriteLine("1.Solicitar un servicio de correspondencia o encomienda.");
+                Console.WriteLine("2.Consultar el estado de un servicio.");
+                Console.WriteLine("3.Consultar el estado de cuenta.");
+                Console.WriteLine("4.Finalizar");
+                Console.WriteLine("---------------------------------------------------------");
+                Console.WriteLine("Ingrese su opción");
 
-                        case "2":
-                            // genera file de facturas
-                            Facturacion.DatosFacturacion();
-                            estadodeserv.ConsultarSaldoCuenta(cliente.nrocliente);
-                            break;
+                //Ingreso de opción
+                var opcion = Console.ReadLine();
 
-                        case "3":
-                            //volver a menu principal
-                            break;
 
-                        default:
-                            Console.WriteLine("No ingresó una opción válida" +
-                                "\nPresione una tecla para continuar.\n");
-                            break;
-                    }
-                    break;
+                //Switch de opciones con sus clases y métodos
+                switch (opcion)
+                {
+                    case "1":
+                        Console.Clear();
+                        servicio.elegirTipoPaquete();
+                        servicio.elegirTipoEntrega(cliente.nrocliente);
 
-                case"4":
-                    Console.Clear();
-                    Console.WriteLine("El programa se cerrará.\n");
+                        Console.ReadKey();
+                        break;
+
+                    case "2":
+                        Console.Clear();
+                        Estado_de_servicio.ConsultarEstadoServicio();
+                        Console.ReadKey();
+                        break;
+
+                    case "3":
+                        Console.Clear();
+                        //muestra 2 opciones disponibles
+                        Console.WriteLine("1.Ver historial de servicios.");
+                        Console.WriteLine("2.Consultar saldo de cuenta.");
+                        Console.WriteLine("3.Volver atrás.");
+
+                        opcion = Console.ReadLine();
+                        switch (opcion)
+                        {
+                            case "1":
+                                Console.Clear();
+                                // genera file de historial de solicitudes
+                                estadodeserv.ConsultarHistorialCuenta(cliente.nrocliente);
+                                break;
+
+                            case "2":
+                                // genera file de facturas
+                                Facturacion.DatosFacturacion();
+                                estadodeserv.ConsultarSaldoCuenta(cliente.nrocliente);
+                                break;
+
+                            case "3":
+                                //volver a menu principal
+                                break;
+
+                            default:
+                                Console.WriteLine("No ingresó una opción válida" +
+                                    "\nPresione una tecla para continuar.\n");
+                                break;
+                        }
+                        break;
+
+                    case "4":
+                        Console.Clear();
+                        Console.WriteLine("El programa se cerrará.\n");
                         salir = true;
-                    break;
+                        break;
 
-                default:
-                    Console.Clear();
-                    Console.WriteLine("No ingresó una opción válida");
-                    break;
-            }
-                } while(!salir);
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("No ingresó una opción válida");
+                        break;
+                }
 
-            
-            //Finaliza con la creación de los files en base a la información recopilada durante la ejecución, para que el programa reanude donde dejó
-            
+            } while (!salir);
 
             Console.ReadLine();
 

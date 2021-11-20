@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Trabajo_Practico_4
 {
@@ -11,40 +12,31 @@ namespace Trabajo_Practico_4
     {
 
         public bool urgente { get; set; }
-
         public bool retiroPuerta { get; set; }
-
         public bool entregaPuerta { get; set; }
-
         public int alcanceEnvío { get; set; }
 
-        public int alcanceEnvioInt { get; set; }
-
-        public string direccionOrigen { get; set; }
-
-        public string direccionDestino { get; set; }
-
-        public int codigoPostalOrigen { get; set; }
-
-        public int codigoPostalDestino { get; set; }
-
-        public string regionProvinciaOrigen { get; set; }
-
         public string tipoEntregaSeleccionada { get; set; }
-
         public string tipoPaqueteSeleccionado { get; set; }
 
+        public string regionDeOrigenSeleccionada { get; set; }
         public string provinciaDeOrigenSeleccionada { get; set; }
+        public string direccionOrigen { get; set; }
+        public int codigoPostalOrigen { get; set; }
 
+        public string regionDeDestinoSeleccionada { get; set; }
         public string provinciaDeDestinoSeleccionada { get; set; }
+        public string direccionDestino { get; set; }
+        public int codigoPostalDestino { get; set; }
 
         public string provinciaDestinoInternacional { get; set; }
+        public int alcanceEnvioInt { get; set; }
 
         public double precioFinal { get; set; }
-
         public int codSeg { get; set; }
 
 
+        List<string> Provincias = new List<string>();
 
         Dictionary<int, string> tipoEntrega = new Dictionary<int, string>()
         {
@@ -60,120 +52,22 @@ namespace Trabajo_Practico_4
             [4] = "Bultos hasta 30 kilogramos"
         };
 
-        Dictionary<int, string> provinciaNacional = new Dictionary<int, string>()
+
+        public void LeerDestinos()
         {
-            [1] = "Buenos Aires",
-            [2] = "CABA",
-            [3] = "Catamarca",
-            [4] = "Chaco",
-            [5] = "Chubut",
-            [6] = "Cordoba",
-            [7] = "Corrientes",
-            [8] = "Entre Rios",
-            [9] = "Formosa",
-            [10] = "Jujuy",
-            [11] = "La Pampa",
-            [12] = "La Rioja",
-            [13] = "Mendoza",
-            [14] = "Misiones",
-            [15] = "Neuquen",
-            [16] = "Rio Negro",
-            [17] = "San Luis",
-            [18] = "San Juan",
-            [19] = "Santa Cruz",
-            [20] = "Santa Fe",
-            [21] = "Santiago del Estero",
-            [22] = "Salta",
-            [23] = "Tierra del Fuego",
-            [24] = "Tucumán",
+            using (StreamReader lector = new StreamReader(@"Destinos.txt"))
+            {
+                string line;
 
-        };
+                while ((line = lector.ReadLine()) != null)
+                {
+                    Provincias.Add(line);
+                }
 
-        Dictionary<int, string> provinciaInternacional = new Dictionary<int, string>()
-        {
-            [1] = "Brasil - San Pablo",
-            [2] = "Uruguay - Montevideo",
-            [3] = "Paraguay - Asuncion",
-            [4] = "Colombia - Antioquia",
-            [5] = "Peru - Lima",
-            [6] = "Ecuador - Quito",
-            [7] = "Estados Unidos - California",
-            [8] = "España - Madrid",
-            [9] = "Japon - Tokio",
-            [10] = "China - Pekin",
-        };
+                lector.Close();
+            }
 
-        List<string> regionNorte = new List<string>()
-        {
-            "Chaco",
-            "Salta",
-            "Catamarca",
-            "Formosa",
-            "Jujuy",
-            "Misiones",
-            "Santiago del Estero",
-            "Tucuman",
-            "Corrientes"
-        };
-
-        List<string> regionCentro = new List<string>()
-        {
-            "Cordoba",
-            "Entre Rios",
-            "La Pampa",
-            "La Rioja",
-            "Mendoza",
-            "San Juan",
-            "San Luis",
-            "Santa Fe"
-
-        };
-
-        List<string> regionSur = new List<string>()
-        {
-            "Chubut",
-            "Neuquen",
-            "Rio Negro",
-            "Santa Cruz",
-            "Tierra Del Fuego"
-        };
-
-
-        List<string> regionMetropolitana = new List<string>()
-        {
-            "Buenos Aires",
-            "CABA"
-        };
-
-        List<string> paisesLimitrofes = new List<string>()
-        {
-            "Brasil - San Pablo",
-            "Uruguay - Montevideo",
-            "Paraguay - Asunción"
-        };
-
-        List<string> restoAmericaLatina = new List<string>()
-        {
-            "Colombia - Antioquia",
-            "Peru - Lima",
-            "Ecuador - Quito"
-        };
-
-        List<string> americaDelNorte = new List<string>()
-        {
-            "Estados Unidos - California"
-        };
-
-        List<string> europa = new List<string>()
-        {
-            "España - Madrid"
-        };
-
-        List<string> asia = new List<string>()
-        {
-            "Japon - Tokio",
-            "China - Pekin"
-        };
+        }
 
         //Selecciona el usuario el peso del paquete a enviar
 
@@ -183,65 +77,43 @@ namespace Trabajo_Practico_4
         {
             bool flag = false;
             string paquete;
-            //string tipoPaqueteSeleccionado;
+            provinciaDeDestinoSeleccionada = "";
+            provinciaDestinoInternacional = "";
 
             do
             {
-                Console.WriteLine();
-                Console.WriteLine("Paso 1 - Seleccione el número del tipo de paquete a entregar y presione ENTER");
-                Console.WriteLine();
+                Console.WriteLine("\nPaso 1 - Seleccione el número del tipo de paquete a entregar y presione ENTER\n");
+
                 foreach (KeyValuePair<int, string> opcion in tipoPaquete)
                 {
-
-                    Console.WriteLine($"{opcion.Key} - {opcion.Value}");
-                    Console.WriteLine();
+                    Console.WriteLine($"{opcion.Key} - {opcion.Value}\n");
                 }
 
                 paquete = Console.ReadLine();
 
                 //Valido la data ingresada por el usuario
                 if (string.IsNullOrWhiteSpace(paquete))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor, no ingrese valores vacíos");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                 else if (!int.TryParse(paquete, out opcionPaquete))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor numérico.");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese un valor numérico.\n");
 
                 else if (opcionPaquete != 1 && opcionPaquete != 2 && opcionPaquete != 3 && opcionPaquete != 4)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese una de las opciones");
-                    Console.WriteLine();
-
-                }
+                    Console.WriteLine("\nPor favor ingrese una de las opciones\n");
 
                 else
-                {
                     flag = true;
-                }
-                
+
             } while (flag == false);
 
             tipoPaqueteSeleccionado = tipoPaquete[opcionPaquete];
 
-            //Devuelvo la información seleccionada para el tipo de entrega
-            Console.WriteLine();
-            Console.WriteLine($"Eligió: {tipoPaqueteSeleccionado}");
-            Console.WriteLine();
-
+            Console.WriteLine($"\nEligió: {tipoPaqueteSeleccionado}\n");
             Console.WriteLine("------Enter para continuar------");
-            Console.ReadKey();//
+            Console.ReadKey();
 
-            Console.Clear();//
+            Console.Clear();
         }
-
 
         //Selecciona el usuario si desea una entrega nacional o internacional
 
@@ -260,107 +132,85 @@ namespace Trabajo_Practico_4
 
                 foreach (KeyValuePair<int, string> opcion in tipoEntrega)
                 {
-
-                    Console.WriteLine($"{opcion.Key} - {opcion.Value}");
-                    Console.WriteLine();//
+                    Console.WriteLine($"{opcion.Key} - {opcion.Value}\n");
                 }
 
                 entrega = Console.ReadLine();
 
                 //Valido la data ingresada por el usuario
                 if (string.IsNullOrWhiteSpace(entrega))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor, no ingrese valores vacíos");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                 else if (!int.TryParse(entrega, out opcionEntrega))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor numérico");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese un valor numérico\n");
 
                 else if (opcionEntrega != 1 && opcionEntrega != 2)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese una de las opciones");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese una de las opciones\n");
 
                 else
-                {
                     flag = true;
-                }
-
 
             } while (flag == false);
 
             tipoEntregaSeleccionada = tipoEntrega[opcionEntrega];
 
             //Devuelvo la información seleccionada para el tipo de entrega
-            Console.WriteLine();
-            Console.WriteLine($"Eligió: {tipoEntregaSeleccionada}");
-            Console.WriteLine();
-
+            Console.WriteLine($"\nEligió: {tipoEntregaSeleccionada}\n");
             Console.WriteLine("------Enter para continuar------");
-            Console.ReadKey();//
+            Console.ReadKey();
 
-            Console.Clear();//
+            Console.Clear();
 
             bool flagC = false;
             string provinciaDeOrigen;
 
-            Console.WriteLine("Paso 3 - Seleccione la provincia de ORIGEN y presione ENTER");
-            Console.WriteLine();
+            Console.WriteLine("Paso 3 - Seleccione la provincia de ORIGEN y presione ENTER\n");
+
             do
             {
-                foreach (KeyValuePair<int, string> opcion in provinciaNacional)
+                foreach (var item in Provincias)
                 {
-                    Console.WriteLine($"{opcion.Key} - {opcion.Value}");
+                    string[] linea = item.Split(';');
+                    int num = int.Parse(linea[0]);
+
+                    if (num < 25)
+                        Console.WriteLine($"{linea[0]} - {linea[1]}");
                 }
 
                 provinciaDeOrigen = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(provinciaDeOrigen))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor, no ingrese valores vacíos");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                 else if (!int.TryParse(provinciaDeOrigen, out opcionProvincia))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un valor numérico");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese un valor numérico\n");
 
                 else if (opcionProvincia <= 0 || opcionProvincia > 24)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese una de las opciones");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese una de las opciones\n");
 
                 else
-                {
                     flagC = true;
-                }
 
             } while (flagC == false);
 
-            provinciaDeOrigenSeleccionada = provinciaNacional[opcionProvincia];
+            foreach (var item in Provincias)
+            {
+                string[] linea = item.Split(';');
+                int num = int.Parse(linea[0]);
 
-            Console.WriteLine();
-            Console.WriteLine($"Eligió {provinciaDeOrigenSeleccionada} como ORIGEN");
-            Console.WriteLine();
+                if (num == opcionProvincia)
+                {
+                    provinciaDeOrigenSeleccionada = linea[1];
+                    regionDeOrigenSeleccionada = linea[2];
+                }
 
+            }
+
+            Console.WriteLine($"\nEligió {provinciaDeOrigenSeleccionada} como ORIGEN\n");
             Console.WriteLine("------Enter para continuar------");
-            Console.ReadKey();//
+            Console.ReadKey();
 
-            Console.Clear();//
+            Console.Clear();
 
             if (tipoEntregaSeleccionada == "Nacional")
             {
@@ -371,110 +221,106 @@ namespace Trabajo_Practico_4
                 Console.WriteLine();
                 do
                 {
-                    foreach (KeyValuePair<int, string> opcion in provinciaNacional)
+                    foreach (var item in Provincias)
                     {
+                        string[] linea = item.Split(';');
+                        int num = int.Parse(linea[0]);
 
-                        Console.WriteLine($"{opcion.Key} - {opcion.Value}");
+                        if (num < 25)
+                            Console.WriteLine($"{linea[0]} - {linea[1]}");
                     }
 
                     provinciaDeDestino = Console.ReadLine();
 
                     if (string.IsNullOrWhiteSpace(provinciaDeDestino))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor, no ingrese valores vacíos");
-                        Console.WriteLine();
-                    }
+                        Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                     else if (!int.TryParse(provinciaDeDestino, out opcionProvincia))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un valor numérico");
-                        Console.WriteLine();
-                    }
+                        Console.WriteLine("\nPor favor ingrese un valor numérico\n");
 
                     else if (opcionProvincia <= 0 || opcionProvincia > 24)
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese una de las opciones");
-                        Console.WriteLine();
-                    }
+                        Console.WriteLine("\nPor favor ingrese una de las opciones\n");
 
                     else
-                    {
                         flagF = true;
-                    }
 
                 } while (flagF == false);
 
-                provinciaDeDestinoSeleccionada = provinciaNacional[opcionProvincia];
+                foreach (var item in Provincias)
+                {
+                    string[] linea = item.Split(';');
+                    int num = int.Parse(linea[0]);
 
-                Console.WriteLine();
-                Console.WriteLine($"Eligió {provinciaDeDestinoSeleccionada} como DESTINO");
-                Console.WriteLine();
+                    if (num == opcionProvincia)
+                    {
+                        provinciaDeDestinoSeleccionada = linea[1];
+                        regionDeDestinoSeleccionada = linea[2];
+                    }
 
+                }
+
+                Console.WriteLine($"\nEligió {provinciaDeDestinoSeleccionada} como DESTINO\n");
                 Console.WriteLine("------Enter para continuar------");
-                Console.ReadKey();//
+                Console.ReadKey();
 
-                Console.Clear();//
+                Console.Clear();
             }
 
             else
             {
                 bool flagG = false;
 
-
                 Console.WriteLine("Paso 4 - Seleccione el DESTINO y presione ENTER");
 
                 do
                 {
+                    int opcion = 0;
 
-                    foreach (KeyValuePair<int, string> opcion in provinciaInternacional)
+                    foreach (var item in Provincias)
                     {
-                        Console.WriteLine($"{opcion.Key} - {opcion.Value}");
+                        string[] linea = item.Split(';');
+                        int num = int.Parse(linea[0]);
+
+                        if (num > 24)
+                        {
+                            opcion = opcion + 1;
+                            Console.WriteLine($"{opcion} - {linea[1]}");
+                        }
                     }
 
                     provinciaDestinoInternacional = Console.ReadLine();
 
                     if (string.IsNullOrWhiteSpace(provinciaDestinoInternacional))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor, no ingrese valores vacíos");
-                        Console.WriteLine();
-                    }
+                        Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                     else if (!int.TryParse(provinciaDestinoInternacional, out opcionProvincia))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese un valor numérico");
-                        Console.WriteLine();
-                    }
+                        Console.WriteLine("\nPor favor ingrese un valor numérico\n");
 
                     else if (opcionProvincia <= 0 || opcionProvincia > 10)
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Por favor ingrese una de las opciones");
-                        Console.WriteLine();
-
-                    }
+                        Console.WriteLine("\nPor favor ingrese una de las opciones\n");
 
                     else
-                    {
                         flagG = true;
-                    }
 
                 } while (flagG == false);
 
-                provinciaDestinoInternacional = provinciaInternacional[opcionProvincia];
+                foreach (var item in Provincias)
+                {
+                    string[] linea = item.Split(';');
+                    int num = int.Parse(linea[0]);
 
-                Console.WriteLine();
-                Console.WriteLine($"Eligió {provinciaDestinoInternacional} como DESTINO");
-                Console.WriteLine();
+                    if (num == opcionProvincia + 24)
+                    {
+                        provinciaDestinoInternacional = linea[1];
+                        regionDeDestinoSeleccionada = linea[2];
+                    }
+                }
 
+                Console.WriteLine($"\nEligió {provinciaDestinoInternacional} como DESTINO\n");
                 Console.WriteLine("------Enter para continuar------");
-                Console.ReadKey();//
+                Console.ReadKey();
 
-                Console.Clear();//
+                Console.Clear();
             }
 
             bool flagA = false;
@@ -482,8 +328,6 @@ namespace Trabajo_Practico_4
             string codigoPostalIngresado;
             int codigoPostalValidadoOrigen = 0;
             int codigoPostalValidadoDestino = 0;
-
-
 
             do
             {
@@ -493,75 +337,47 @@ namespace Trabajo_Practico_4
                 Console.WriteLine();
 
                 if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor, no ingrese valores vacíos");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                 else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidadoOrigen))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un Código Postal valido.");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese un Código Postal valido\n");
+
                 else if (codigoPostalValidadoOrigen <= 0)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un Código Postal valido.");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese un Código Postal valido\n");
 
                 else
-                {
                     flagA = true;
-                }
 
             } while (flagA == false);
 
-
-
             codigoPostalOrigen = codigoPostalValidadoOrigen;
 
-
             do
-            {   
+            {
                 Console.WriteLine();
                 Console.WriteLine("Paso 5.2 - Ingrese el Código Postal de destino (SOLO NUMEROS) y presione ENTER");
 
                 codigoPostalIngresado = Console.ReadLine();
                 Console.WriteLine();
+
                 if (string.IsNullOrWhiteSpace(codigoPostalIngresado))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor, no ingrese valores vacíos");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                 else if (!int.TryParse(codigoPostalIngresado, out codigoPostalValidadoDestino))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un Código Postal valido.");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese un Código Postal valido.\n");
+
                 else if (codigoPostalValidadoDestino <= 0)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor ingrese un Código Postal valido.");
-                    Console.WriteLine();
-                }
+                    Console.WriteLine("\nPor favor ingrese un Código Postal valido.\n");
 
                 else
-                {
                     flagB = true;
-                }
 
             } while (flagB == false);
 
             Console.WriteLine("------Enter para continuar------");
-            Console.ReadKey();//
+            Console.ReadKey();
 
-            Console.Clear();//
+            Console.Clear();
 
             codigoPostalDestino = codigoPostalValidadoDestino;
 
@@ -577,23 +393,13 @@ namespace Trabajo_Practico_4
                 Console.WriteLine();
 
                 if (string.IsNullOrWhiteSpace(direccionDeOrigen))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor, no ingrese valores vacíos");
-                    Console.WriteLine();
-                    continue;
-                }
+                    Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                 if (flag = hasSpecialChar2(direccionDeOrigen))
-                {
                     Console.WriteLine("La dirección no debe contener símbolos");
-                    continue;
-                }
 
                 else
-                {
                     flagD = true;
-                }
 
             } while (flagD == false);
 
@@ -612,45 +418,31 @@ namespace Trabajo_Practico_4
                 Console.WriteLine();
 
                 if (string.IsNullOrWhiteSpace(direccionDeDestino))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Por favor, no ingrese valores vacíos");
-                    Console.WriteLine();
-                    continue;
-                }
+                    Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
 
                 if (flag = hasSpecialChar2(direccionDeDestino))
-                {
                     Console.WriteLine("La dirección no debe contener símbolos");
-                    continue;
-                }
 
                 else
-                {
                     flagE = true;
-                }
 
             } while (flagE == false);
 
             Console.WriteLine("------Enter para continuar------");
-            Console.ReadKey();//
+            Console.ReadKey();
 
-            Console.Clear();//
+            Console.Clear();
 
 
             direccionDestino = direccionDeDestino;
 
-            //calculo alcance del envío comparando regiones ( alcance: 1 = local / 2=provincial / 3=regional / 4=nacional )
+            //calculo alcance del envío comparando regiones (alcance: 1=local / 2=provincial / 3=regional / 4=nacional )
 
             if (tipoEntregaSeleccionada == "Nacional")
             {
 
-                if (regionCentro.Contains(provinciaDeOrigenSeleccionada) && regionCentro.Contains(provinciaDeDestinoSeleccionada) ||
-                regionNorte.Contains(provinciaDeOrigenSeleccionada) && regionNorte.Contains(provinciaDeDestinoSeleccionada) ||
-                regionSur.Contains(provinciaDeOrigenSeleccionada) && regionSur.Contains(provinciaDeDestinoSeleccionada) ||
-                regionMetropolitana.Contains(provinciaDeOrigenSeleccionada) && regionMetropolitana.Contains(provinciaDeDestinoSeleccionada))
+                if (regionDeDestinoSeleccionada == regionDeOrigenSeleccionada)
                 {
-
                     if (provinciaDeDestinoSeleccionada == provinciaDeOrigenSeleccionada)
                     {
                         if (codigoPostalDestino == codigoPostalOrigen)
@@ -666,40 +458,27 @@ namespace Trabajo_Practico_4
             }
             else
             {
-                if (regionMetropolitana.Contains(provinciaDeOrigenSeleccionada) && regionMetropolitana.Contains("CABA"))
+                if (regionDeOrigenSeleccionada == "Metropolitana")
                 {
                     if (provinciaDeOrigenSeleccionada == "CABA")
                         alcanceEnvío = 1;
                     else
-                        alcanceEnvío = 3;
+                        alcanceEnvío = 2;
                 }
                 else
                     alcanceEnvío = 4;
-
             }
 
-            if (paisesLimitrofes.Contains(provinciaDestinoInternacional))
-            {
+            if (regionDeDestinoSeleccionada == "Limitrofe")
                 alcanceEnvioInt = 1;
-
-            }
-            else if (restoAmericaLatina.Contains(provinciaDestinoInternacional))
-            {
+            else if (regionDeDestinoSeleccionada == "AmercaLatina")
                 alcanceEnvioInt = 2;
-            }
-            else if (americaDelNorte.Contains(provinciaDestinoInternacional))
-            {
+            else if (regionDeDestinoSeleccionada == "AmericaNorte")
                 alcanceEnvioInt = 3;
-            }
-            else if (europa.Contains(provinciaDestinoInternacional))
-            {
+            else if (regionDeDestinoSeleccionada == "Europa")
                 alcanceEnvioInt = 4;
-            }
-            else if (asia.Contains(provinciaDestinoInternacional))
-            {
+            else if (regionDeDestinoSeleccionada == "Asia")
                 alcanceEnvioInt = 5;
-
-            }
 
             bool flag1 = false;
             do
@@ -710,10 +489,7 @@ namespace Trabajo_Practico_4
                 Console.WriteLine();
 
                 if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
-                {
                     Console.WriteLine("Ingrese S/N");
-                    continue;
-                }
 
                 if (tecla.Key == ConsoleKey.S)
                 {
@@ -734,26 +510,20 @@ namespace Trabajo_Practico_4
             } while (!flag1);
 
             Console.WriteLine("------Enter para continuar------");
-            Console.ReadKey();//
+            Console.ReadKey();
 
-            Console.Clear();//
+            Console.Clear();
 
             bool flag2 = false;
             do
             {
-
-                //Console.WriteLine($"¿El despacho será realizado desde el domicilio del remitente? De ser así, el valor adicional es de $700");
 
                 Console.WriteLine("Paso 8 - ¿Desea hacer el despacho desde su domicilio? El valor adicional es de $70. Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
                 Console.WriteLine();
 
                 if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
-                {
                     Console.WriteLine("Ingrese S/N");
-                    continue;
-                }
-
 
                 if (tecla.Key == ConsoleKey.S)
                 {
@@ -781,18 +551,12 @@ namespace Trabajo_Practico_4
             bool flag3 = false;
             do
             {
-
-
                 Console.WriteLine("Paso 9 - ¿Desea que el envío sea urgente? El adicional es de un 15% sobre el valor del envío. Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
                 Console.WriteLine();
 
                 if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
-                {
                     Console.WriteLine("Ingrese S/N");
-                    continue;
-                }
-
 
                 if (tecla.Key == ConsoleKey.S)
                 {
@@ -816,22 +580,18 @@ namespace Trabajo_Practico_4
 
             Console.Clear();
 
-            //llama a métod calcular precio
+            //CALCULAR PRECIO
             var precio = new Precios();
             var logistica = new Logistica();
 
             if (tipoEntregaSeleccionada == "Nacional")
-            {
                 precioFinal = precio.CalcularPrecioServicio(tipoPaqueteSeleccionado, alcanceEnvío, entregaPuerta, retiroPuerta, urgente);
-            }
             else
-            {
                 precioFinal = precio.CalcularPrecioServicio(tipoPaqueteSeleccionado, alcanceEnvío, entregaPuerta, retiroPuerta, alcanceEnvioInt, urgente);
-            }
 
             Console.WriteLine($"Valor del envío: ${precioFinal} (IVA incluido)");
 
-            bool flag4 = false;
+            flag = false;
             do
             {
                 Console.WriteLine();
@@ -839,74 +599,52 @@ namespace Trabajo_Practico_4
                 var tecla = Console.ReadKey(intercept: true);
 
                 if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
-                {
                     Console.WriteLine("Ingrese Si(S) / No(N)");
-                    continue;
-                }
-
 
                 if (tecla.Key == ConsoleKey.S)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("El envío fue confirmado exitosamente");
+                    Console.WriteLine("\nEl envío fue confirmado exitosamente");
+                    Console.ReadKey();
 
-                    Console.WriteLine();
                     logistica.DatosCoddeSeg();
-                    logistica.GeneraryMostrarMostrarCS(nrocliente);
-                    //MOSTRAR CÓDIGO DE SEGUIMIENTO
-                    //GRABAR EL SERVICIO
-                    mostrarDetalle();
 
-                    flag4 = true;
+                    //MOSTRAR DETALLE
+                    mostrarDetalle();
+                    //Generar código de seguimiento y grabar servicio
+                    logistica.GenerarFile(nrocliente, logistica.GeneraryMostrarMostrarCS(nrocliente), precioFinal);
+                    flag = true;
                 }
                 else if (tecla.Key == ConsoleKey.N)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("¿Esta seguro que quiere cancelarlo? Si(S) / No(N)");
-
+                    Console.WriteLine("\n¿Esta seguro que quiere cancelarlo? Si(S) / No(N)");
 
                     var tecla2 = Console.ReadKey(intercept: true);
 
                     if (tecla2.Key != ConsoleKey.S && tecla2.Key != ConsoleKey.N)
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Ingrese Si(S) / No(N)");
-                        continue;
-                    }
+                        Console.WriteLine("\nIngrese Si(S) / No(N)");
 
                     if (tecla2.Key == ConsoleKey.N)
-                    {
-
-                        flag4 = false;
-                    }
+                        flag = false;
 
                     if (tecla2.Key == ConsoleKey.S)
                     {
-                        Console.WriteLine();
-                        Console.WriteLine("El envío fue cancelado");
+                        Console.WriteLine("\nEl envío fue cancelado");
                         //VOLVER AL MENU PRINCIPAL
-                        flag4 = true;
+                        flag = true;
                     }
-
 
                 }
 
-            } while (!flag4);
-
-
+            } while (!flag);
 
         }
-
 
         public void mostrarDetalle()
         {
             Console.Clear();
             var logistica = new Logistica();
 
-            //logistica.GeneraryMostrarMostrarCS();
-            /*{logistica.codseguim} */
-
-            Console.WriteLine($"Resumen servicio: "); //TODO agregar cod seguimiento el detalle
+            Console.WriteLine($"\nResumen servicio: ");
             Console.WriteLine("-------------------------------------------------------");
             Console.WriteLine("Datos generales del servicio: ");
             Console.WriteLine($"Se enviará un {tipoPaqueteSeleccionado} ");
@@ -928,9 +666,7 @@ namespace Trabajo_Practico_4
             Console.WriteLine("Servicios adicionales: ");
 
             if (urgente == false && entregaPuerta == false && retiroPuerta == false)
-            {
                 Console.WriteLine("No se solicitó ningún servicio adicional");
-            }
 
             else
             {
@@ -939,7 +675,7 @@ namespace Trabajo_Practico_4
                 if (urgente == true)
                 {
                     numero++;
-                    Console.WriteLine($" {numero}. El serivicio será realizado con caracter urgente");
+                    Console.WriteLine($" {numero}. El servicio será realizado con caracter urgente");
                 }
                 if (entregaPuerta == true)
                 {
@@ -953,12 +689,8 @@ namespace Trabajo_Practico_4
                 }
             }
 
-            Console.WriteLine("-------------------------------------------------------");
-            Console.WriteLine();
-            Console.WriteLine("Facturación: ");
-            Console.WriteLine($"El precio final del servicio será: {precioFinal}");
+            Console.WriteLine("-------------------------------------------------------\n");
             Console.ReadKey();
-
         }
 
 
@@ -966,11 +698,11 @@ namespace Trabajo_Practico_4
         public static bool hasSpecialChar2(string input)
         {
             string specialChar = @"|¡!#$%&/()`^=¿?»«@£§€{}.,;:[]+-~`'°<>_";
+
             foreach (var item in specialChar)
             {
                 if (input.Contains(item)) return true;
             }
-
             return false;
         }
     }

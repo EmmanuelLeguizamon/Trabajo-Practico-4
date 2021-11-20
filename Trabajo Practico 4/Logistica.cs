@@ -9,34 +9,16 @@ namespace Trabajo_Practico_4
 {
     class Logistica
     {
-        public int codseguim { get;set;}
+        public int codseguim { get; set; } = 10000;
 
+        //ver si es necesario el diccionario
         Dictionary<int, int> ClienteyCodSeg = new Dictionary<int, int>();
 
-        //PRIMERO EN EJECTARSE - En caso de que no exista, genera un file con casos forzados. Siempre va a iniciar cargando lo que lea del file en un diccionario.
-        public void DatosCoddeSeg() //Extraer del .txt los datos
+        List<string> lista_txt = new List<string>();
+
+        //Extraer del .txt los datos y guardarlos en una lista
+        public void DatosCoddeSeg()
         {
-            //Verifico si el file existe, en caso de no existir se crea.
-            if (!File.Exists(@"CodigosdeSeguimiento.txt"))
-            {
-                using (var sw = new StreamWriter(@"CodigosdeSeguimiento.txt"))
-                {
-                    //Formato = Cod seguim (KEY), cliente
-                    sw.WriteLine("10589,40395");
-                    sw.WriteLine("10432,40395");
-                    sw.WriteLine("10946,40395");
-                    sw.WriteLine("10049,18285");
-                    sw.WriteLine("10501,18285");
-                    sw.WriteLine("10689,18285");
-                    sw.WriteLine("10054,14330");
-                    sw.WriteLine("11194,14330");
-                    sw.WriteLine("11052,48407");
-                    sw.WriteLine("10784,48407");
-
-                    sw.Close();
-                }
-            }
-
             using (StreamReader sr = new StreamReader(@"CodigosdeSeguimiento.txt"))
             {
                 string line;
@@ -44,56 +26,51 @@ namespace Trabajo_Practico_4
 
                 while ((line = sr.ReadLine()) != null)
                 {
-                    data = line.Split(',');
+                    data = line.Split(';');
                     int codigdodeseguim = Convert.ToInt32(data[0]);
                     int cliente = Convert.ToInt32(data[1]);
-
                     ClienteyCodSeg.Add(codigdodeseguim, cliente);
-                    codseguim = codigdodeseguim;
+
+                    lista_txt.Add(line);
                 }
                 sr.Close();
 
-
-                // verificación de la tabla
-                /*foreach (KeyValuePair<int, int> cliente_ in ClienteyCodSeg)
-                {
-                    Console.WriteLine(cliente_.Key + "\t" + cliente_.Value);
-                }*/
+                codseguim = ClienteyCodSeg.Keys.Max();
             }
 
         }
 
-        //Genera un nuevo código en base al último generado. Util en clase Servicios.
-        public void GeneraryMostrarMostrarCS(int nrocliente)
+        //Genera y devuelve un nuevo código en base al último generado y lo muestra en pantalla.
+        public int GeneraryMostrarMostrarCS(int nrocliente)
         {
-            //var cliente = new Cliente();
-            
+
             codseguim = codseguim + 1;
 
             ClienteyCodSeg.Add(codseguim, nrocliente);
 
-            Console.WriteLine($"El  numero de seguimiento es {codseguim} ");
-            Console.ReadKey();
+            Console.WriteLine($"Se registró su servicio. Código de seguimiento: {codseguim}");
 
-            /*
-            foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
+            //PRUEBA DE GENERACIÓN
+            /*foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
             {
                 Console.WriteLine(cliente__.Key + "\t" + cliente__.Value);
             }
-            Console.ReadKey();
-            */
+            Console.ReadKey();*/
+
+            return codseguim;
         }
 
-        //ULTIMO EN EJECUTARSE - Genera el file en base a lo que tiene el diccionario. Listo para la próxima ejecución.
-        public void GenerarFile()
+        //ULTIMO EN EJECUTARSE - Genera el file en base a lo que tiene en la lista.
+        public void GenerarFile(int cliente, int codseguim, double precio)
         {
             using (var sw = new StreamWriter(@"CodigosdeSeguimiento.txt"))
             {
-                //Formato = Nro cliente, Cod seguim
-                foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
+                foreach (var item in lista_txt)
                 {
-                    sw.WriteLine(cliente__.Key + "," + cliente__.Value);
+                    sw.WriteLine(item);
                 }
+
+                sw.WriteLine(codseguim + ";" + cliente + ";" + "Recibido" + ";" + precio);
 
                 sw.Close();
             }
@@ -105,20 +82,19 @@ namespace Trabajo_Practico_4
         {
             bool valido = false;
             int codseg;
-            string estado;
             const int MinLenght = 10000;
             const int MaxLenght = 99999;
             var cliente = new Cliente();
-            
-            
-            
+
+
+
             do
             {
                 Console.WriteLine("Ingrese el código de seguimiento. (5 dígitos, sin guiones ni espacios)");
                 string codigo = Console.ReadLine();
-                
-                
-                
+
+
+
                 if (!int.TryParse(codigo, out codseg))
                 {
                     Console.WriteLine("\nNo ha ingresado un código de seguimiento válido (5 dígitos, sin guiones ni espacios)" +
@@ -126,9 +102,9 @@ namespace Trabajo_Practico_4
                     Console.ReadKey();
                     Console.Clear();
                 }
-                
-                
-                
+
+
+
                 else if (MinLenght > codseg || codseg > MaxLenght)
                 {
                     Console.WriteLine($"\nEl código de seguimiento debe contener 5 dígitos." +
@@ -136,37 +112,37 @@ namespace Trabajo_Practico_4
                     Console.ReadKey();
                     Console.Clear();
                 }
-                
-                
-                
+
+
+
                 else
                 {
                     using (StreamReader lector = new StreamReader(@"CodigosdeSeguimiento.txt"))
                     {
                         string line;
-                        
+
                         while ((line = lector.ReadLine()) != null)
                         {
-                            string combined = (string.Format(codigo, "," ,cliente.nrocliente));
+                            string combined = (string.Format(codigo, ",", cliente.nrocliente));
                             if (line.Contains(combined))
                             {
                                 valido = true;
                             }
                         }
-                
+
                         lector.Close();
                     }
-                
+
                     if (!valido)
-                    Console.WriteLine("No tenemos ningún servicio registrado con ese número, vuelva a intentarlo");
+                        Console.WriteLine("No tenemos ningún servicio registrado con ese número, vuelva a intentarlo");
                 }
-                
-                
-                
+
+
+
             } while (valido == false);
-                       
+
             return codseg;
-                    
+
         }
     }
 }

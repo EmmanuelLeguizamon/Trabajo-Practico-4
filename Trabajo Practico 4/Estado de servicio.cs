@@ -9,31 +9,11 @@ namespace Trabajo_Practico_4
 {
     class Estado_de_servicio
     {
-        //en class Estado_de_servicio
 
         //verifico si el file existe, sino se crea
         public static void SolicitudesDeServicio()
         {
-            //Verifico si el file existe, en caso de no existir se crea.
-            if (!File.Exists(@"SolicitudesDeServicio.txt"))
-            {
-                using (var writer = new StreamWriter(@"SolicitudesDeServicio.txt"))
-                {
-                    //formato: cuit cliente; cod servicio; estado; monto
-                    writer.WriteLine("40395;10589;Recibido;3000");
-                    writer.WriteLine("40395;10432;Tránsito;4500");
-                    writer.WriteLine("40395;10946;Cerrado;1800");
-                    writer.WriteLine("18285;10049;Tránsito;1200");
-                    writer.WriteLine("18285;10501;Tránsito;7000");
-                    writer.WriteLine("18285;10689;Cerrado;2000");
-                    writer.WriteLine("14330;10054;Recibido;6000");
-                    writer.WriteLine("14330;11194;Recibido;1200");
-                    writer.WriteLine("48407;11052;Cerrado;3000");
-                    writer.WriteLine("48407;10784;Tránsito;1800");
 
-                    writer.Close();
-                }
-            }
         }
 
         //devuelve historial de servicios por cliente
@@ -41,7 +21,7 @@ namespace Trabajo_Practico_4
         {
             List<string> ServiciosCliente = new List<string>();
 
-            using (StreamReader lector = new StreamReader(@"SolicitudesDeServicio.txt"))
+            using (StreamReader lector = new StreamReader(@"CodigosdeSeguimiento.txt"))
             {
                 string line;
 
@@ -70,7 +50,7 @@ namespace Trabajo_Practico_4
             foreach (var item in Estado_de_servicio.ConsultarServiciosCliente(cuit))
             {
                 string[] linea = item.Split(';');
-                Console.WriteLine($"Código servicio: {linea[1]} \t\t Monto total: {linea[3]} \t\t Estado: {linea[2]}");
+                Console.WriteLine($"Código servicio: {linea[0]} \t\t Monto total: {linea[3]} \t\t Estado: {linea[2]}");
             }
 
             Console.ReadKey();
@@ -80,8 +60,8 @@ namespace Trabajo_Practico_4
         public void ConsultarSaldoCuenta(int cuit)
         {
             Console.WriteLine($"Servicios del cliente {cuit}:");
-            int servicios_pagos = 0;
-            int servicios_total = 0;
+            double servicios_pagos = 0;
+            double servicios_total = 0;
             List<string> servicios_facturados = Facturacion.ConsultarFacturacionCliente(cuit);
             List<string> codigos_facturados = new List<string>();
 
@@ -99,8 +79,8 @@ namespace Trabajo_Practico_4
                 //escribe los que no estan facurados
                 if (!codigos_facturados.Contains(lineaservicio[1]))
                 {
-                    Console.WriteLine($"Código servicio: {lineaservicio[1]} \t\t Monto total: {lineaservicio[3]} \t\t Estado: Pendiente Facturación");
-                    int monto = int.Parse(lineaservicio[3]);
+                    Console.WriteLine($"Código servicio: {lineaservicio[0]} \t\t Monto total: {lineaservicio[3]} \t\t Estado: Pendiente Facturación");
+                    double monto = double.Parse(lineaservicio[3]);
                 }
                 //escribe los facturados 
                 else
@@ -115,7 +95,7 @@ namespace Trabajo_Practico_4
                             if (lineafactura[3] == "si")
                             {
                                 Console.WriteLine($"Código servicio: {lineafactura[2]} \t\t Monto total: {lineafactura[4]} \t\t Estado: Pago");
-                                int monto = int.Parse(lineafactura[4]);
+                                double monto = double.Parse(lineafactura[4]);
                                 servicios_pagos += monto;
                             }
                             else
@@ -127,7 +107,7 @@ namespace Trabajo_Practico_4
 
                 }
 
-                int monto2 = int.Parse(lineaservicio[3]);
+                double monto2 = double.Parse(lineaservicio[3]);
                 servicios_total += monto2;
 
             }
@@ -143,25 +123,25 @@ namespace Trabajo_Practico_4
             int codigo = Logistica.ValidarCodigoIngresado();
 
             //falta recorrer txt y escribir el estado
-            using (StreamReader sr = new StreamReader(@"SolicitudesDeServicio.txt"))
+            using (StreamReader sr = new StreamReader(@"CodigosdeSeguimiento.txt"))
             {
-            string line;
-                        
-            while ((line = sr.ReadLine()) != null)
-            {
-            if (line.Contains(codigo.ToString()))
-            {
-            string[] arraylinea = line.Split(';');
-            estado_servicio = arraylinea[2];
+                string line;
+
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (line.Contains(codigo.ToString()))
+                    {
+                        string[] arraylinea = line.Split(';');
+                        estado_servicio = arraylinea[2];
+                    }
+                }
+
+                sr.Close();
             }
-            }
-            
-            sr.Close();
-            }
-            
+
             Console.WriteLine($"Estado del servicio {codigo}: {estado_servicio}");
-            
+
         }
-       
+
     }
 }

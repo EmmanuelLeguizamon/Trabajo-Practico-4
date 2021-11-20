@@ -10,7 +10,7 @@ namespace Trabajo_Practico_4
     class Cliente
     {
 
-        public int nrocliente {get; set;}
+        public int nrocliente { get; set; }
 
         private bool Corporativo = false;
         public bool corporativo
@@ -57,7 +57,7 @@ namespace Trabajo_Practico_4
                     valido = true;
                     nrocliente = Convert.ToInt32(input);
                 }
-                
+
 
             } while (valido == false);
 
@@ -83,18 +83,7 @@ namespace Trabajo_Practico_4
         public void DatosClientes()
         {
             //Verifico si el file existe, en caso de no existir se crea.
-            if (!File.Exists(@"ClientesCorporativos.txt"))
-            {
-                using (var writer = new StreamWriter(@"ClientesCorporativos.txt"))
-                {
-                    writer.WriteLine("40395");
-                    writer.WriteLine("18285");
-                    writer.WriteLine("14330");
-                    writer.WriteLine("48407");
 
-                    writer.Close();
-                }
-            }
         }
     }
 }
