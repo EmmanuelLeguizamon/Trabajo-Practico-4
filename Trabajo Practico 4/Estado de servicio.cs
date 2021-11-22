@@ -77,7 +77,7 @@ namespace Trabajo_Practico_4
                 string[] lineaservicio = item.Split(';');
 
                 //escribe los que no estan facurados
-                if (!codigos_facturados.Contains(lineaservicio[1]))
+                if (!codigos_facturados.Contains(lineaservicio[0]))
                 {
                     Console.WriteLine($"Código servicio: {lineaservicio[0]} \t\t Monto total: {lineaservicio[3]} \t\t Estado: Pendiente Facturación");
                     double monto = double.Parse(lineaservicio[3]);
@@ -89,7 +89,7 @@ namespace Trabajo_Practico_4
                     {
                         string[] lineafactura = item2.Split(';');
 
-                        if (lineaservicio[1] == lineafactura[2])
+                        if (lineaservicio[0] == lineafactura[2])
                         {
                             //escribe los que estan pagos
                             if (lineafactura[3] == "si")
