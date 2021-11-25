@@ -50,12 +50,7 @@ namespace Trabajo_Practico_4
 
             Console.WriteLine($"Se registró su servicio. Código de seguimiento: {codseguim}");
 
-            //PRUEBA DE GENERACIÓN
-            /*foreach (KeyValuePair<int, int> cliente__ in ClienteyCodSeg)
-            {
-                Console.WriteLine(cliente__.Key + "\t" + cliente__.Value);
-            }
-            Console.ReadKey();*/
+
 
             return codseguim;
         }
@@ -90,7 +85,7 @@ namespace Trabajo_Practico_4
 
             do
             {
-                Console.WriteLine("Ingrese el código de seguimiento. (5 dígitos, sin guiones ni espacios)");
+                Console.WriteLine("Ingrese el código de seguimiento (5 dígitos, sin guiones ni espacios)");
                 string codigo = Console.ReadLine();
 
 

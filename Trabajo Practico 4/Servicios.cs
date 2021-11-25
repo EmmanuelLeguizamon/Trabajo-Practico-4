@@ -10,31 +10,26 @@ namespace Trabajo_Practico_4
 {
     class Servicios
     {
-
         public bool urgente { get; set; }
         public bool retiroPuerta { get; set; }
         public bool entregaPuerta { get; set; }
         public int alcanceEnvío { get; set; }
-
+        public int alcanceEnvioInt { get; set; }
+        public string direccionOrigen { get; set; }
+        public string direccionDestino { get; set; }
+        public int codigoPostalOrigen { get; set; }
+        public int codigoPostalDestino { get; set; }
         public string tipoEntregaSeleccionada { get; set; }
         public string tipoPaqueteSeleccionado { get; set; }
-
         public string regionDeOrigenSeleccionada { get; set; }
         public string provinciaDeOrigenSeleccionada { get; set; }
-        public string direccionOrigen { get; set; }
-        public int codigoPostalOrigen { get; set; }
-
         public string regionDeDestinoSeleccionada { get; set; }
         public string provinciaDeDestinoSeleccionada { get; set; }
-        public string direccionDestino { get; set; }
-        public int codigoPostalDestino { get; set; }
-
         public string provinciaDestinoInternacional { get; set; }
-        public int alcanceEnvioInt { get; set; }
-
+        public string destEnvio { get; set; }///
         public double precioFinal { get; set; }
-        public int codSeg { get; set; }
-
+        public string nomapeDestinatario { get; set; }
+        public string infoDomicilio { get; set; }
 
         List<string> Provincias = new List<string>();
 
@@ -93,10 +88,10 @@ namespace Trabajo_Practico_4
 
                 //Valido la data ingresada por el usuario
                 if (string.IsNullOrWhiteSpace(paquete))
-                    Console.WriteLine("\nPor favor, no ingrese valores vacíos\n");
+                    Console.WriteLine("\nPor favor no ingrese valores vacíos\n");
 
                 else if (!int.TryParse(paquete, out opcionPaquete))
-                    Console.WriteLine("\nPor favor ingrese un valor numérico.\n");
+                    Console.WriteLine("\nPor favor ingrese un valor numérico\n");
 
                 else if (opcionPaquete != 1 && opcionPaquete != 2 && opcionPaquete != 3 && opcionPaquete != 4)
                     Console.WriteLine("\nPor favor ingrese una de las opciones\n");
@@ -124,6 +119,9 @@ namespace Trabajo_Practico_4
         {
             bool flag = false;
             string entrega;
+
+            var precio_ = new Precios();
+            precio_.DatosTarifas();
 
             do
             {
@@ -446,27 +444,50 @@ namespace Trabajo_Practico_4
                     if (provinciaDeDestinoSeleccionada == provinciaDeOrigenSeleccionada)
                     {
                         if (codigoPostalDestino == codigoPostalOrigen)
+                        {
                             alcanceEnvío = 1;
+                            destEnvio = "Local";
+                        }
+
                         else
+                        {
                             alcanceEnvío = 2;
+                            destEnvio = "Provincial";
+                        }
+
                     }
                     else
+                    {
                         alcanceEnvío = 3;
+                        destEnvio = "Regional";
+                    }
                 }
                 else
+                {
                     alcanceEnvío = 4;
+                    destEnvio = "Inter-Regional";
+                }
             }
             else
             {
                 if (regionDeOrigenSeleccionada == "Metropolitana")
                 {
                     if (provinciaDeOrigenSeleccionada == "CABA")
+                    {
                         alcanceEnvío = 1;
+                        destEnvio = "Local - Provincial hasta CABA";
+                    }
                     else
+                    {
                         alcanceEnvío = 2;
+                        destEnvio = "Regional hasta CABA";
+                    }
                 }
                 else
+                {
                     alcanceEnvío = 4;
+                    destEnvio = "Inter-Regional hasta CABA";
+                }
             }
 
             if (regionDeDestinoSeleccionada == "Limitrofe")
@@ -480,10 +501,54 @@ namespace Trabajo_Practico_4
             else if (regionDeDestinoSeleccionada == "Asia")
                 alcanceEnvioInt = 5;
 
+
+
+            Console.WriteLine("Paso 7 - Ingrese información (piso, departamento, timbre, entre calles) y presione ENTER");
+
+            string infoIngresada = Console.ReadLine();
+            Console.WriteLine();
+
+            infoDomicilio = infoIngresada;
+            Console.Write("------Enter para continuar------");
+            Console.ReadKey();
+            Console.Clear();
+
+
+
+
+            bool flag_ = false;
+            string datosIngresados;
+            do
+            {
+
+                Console.WriteLine("Paso 8 - Ingrese el nombre y apellido del destinatario y presione ENTER");
+                Console.WriteLine();
+                datosIngresados = Console.ReadLine();
+
+
+                if (string.IsNullOrWhiteSpace(datosIngresados))
+                    Console.Write("\nPor favor, no ingrese valores vacíos\n");
+                else if (flag = hasSpecialChar(datosIngresados))
+                    Console.Write("\nEl nombre y apellido no puede contener números ni tampoco símbolos\n");
+                else
+                {
+                    flag_ = true;
+                }
+
+            } while (flag_ == false);
+
+
+            Console.Write("\n------Enter para continuar------\n");
+            Console.ReadKey();
+
+            Console.Clear();
+
+            nomapeDestinatario = datosIngresados;
+
             bool flag1 = false;
             do
             {
-                Console.WriteLine("Paso 7 - ¿Desea hacer el envío con entrega a domicilio? Su costo adicional es de $80. Si(S) / No(N)");
+                Console.WriteLine($"Paso 9 - ¿Desea hacer el envío con entrega a domicilio? Su costo adicional es de ${precio_.DiccionarioPrecios["Entrega Puerta"]}. Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
 
                 Console.WriteLine();
@@ -518,7 +583,7 @@ namespace Trabajo_Practico_4
             do
             {
 
-                Console.WriteLine("Paso 8 - ¿Desea hacer el despacho desde su domicilio? El valor adicional es de $70. Si(S) / No(N)");
+                Console.WriteLine($"Paso 10 - ¿Desea hacer el despacho desde su domicilio? El valor adicional es de ${precio_.DiccionarioPrecios["Retiro Puerta"]}. Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
                 Console.WriteLine();
 
@@ -551,7 +616,10 @@ namespace Trabajo_Practico_4
             bool flag3 = false;
             do
             {
-                Console.WriteLine("Paso 9 - ¿Desea que el envío sea urgente? El adicional es de un 15% sobre el valor del envío. Si(S) / No(N)");
+
+                Console.WriteLine($"Paso 11 - ¿Desea que el envío sea urgente? El adicional es de un 15% sobre el valor del envío. \nTope máximo para envíos nacionales de ${precio_.DiccionarioPrecios["Tope Pais"]}\n" +
+                    $"Tope máximo para envíos internacionales de ${precio_.DiccionarioPrecios["Tope Internacional"]}\n" +
+                    $"Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
                 Console.WriteLine();
 
@@ -589,13 +657,15 @@ namespace Trabajo_Practico_4
             else
                 precioFinal = precio.CalcularPrecioServicio(tipoPaqueteSeleccionado, alcanceEnvío, entregaPuerta, retiroPuerta, alcanceEnvioInt, urgente);
 
-            Console.WriteLine($"Valor del envío: ${precioFinal} (IVA incluido)");
+            Console.WriteLine($"Valor del envío: ${Math.Round(precioFinal, 2)} (IVA incluido)");
+
+
 
             flag = false;
             do
             {
                 Console.WriteLine();
-                Console.WriteLine("Paso 10 - ¿Desea confirmar? Si(S) / No(N)");
+                Console.WriteLine("Paso 12 - ¿Desea confirmar? Si(S) / No(N)");
                 var tecla = Console.ReadKey(intercept: true);
 
                 if (tecla.Key != ConsoleKey.S && tecla.Key != ConsoleKey.N)
@@ -603,7 +673,8 @@ namespace Trabajo_Practico_4
 
                 if (tecla.Key == ConsoleKey.S)
                 {
-                    Console.WriteLine("\nEl envío fue confirmado exitosamente");
+                    Console.WriteLine("\nEl envío fue confirmado exitosamente" +
+                        "\n------Enter para continuar------");
                     Console.ReadKey();
 
                     logistica.DatosCoddeSeg();
@@ -612,7 +683,9 @@ namespace Trabajo_Practico_4
                     mostrarDetalle();
                     //Generar código de seguimiento y grabar servicio
                     logistica.GenerarFile(nrocliente, logistica.GeneraryMostrarMostrarCS(nrocliente), precioFinal);
+
                     flag = true;
+                    Console.WriteLine("------Enter para volver al menú principal------");
                 }
                 else if (tecla.Key == ConsoleKey.N)
                 {
@@ -629,6 +702,7 @@ namespace Trabajo_Practico_4
                     if (tecla2.Key == ConsoleKey.S)
                     {
                         Console.WriteLine("\nEl envío fue cancelado");
+                        Console.WriteLine("------Enter para volver al menú------");
                         //VOLVER AL MENU PRINCIPAL
                         flag = true;
                     }
@@ -648,19 +722,21 @@ namespace Trabajo_Practico_4
             Console.WriteLine("-------------------------------------------------------");
             Console.WriteLine("Datos generales del servicio: ");
             Console.WriteLine($"Se enviará un {tipoPaqueteSeleccionado} ");
-            Console.WriteLine($"El servicio a realizar será de alcance: {tipoEntregaSeleccionada}");
+            Console.WriteLine($"El servicio a realizar será de alcance: {tipoEntregaSeleccionada} - {destEnvio}");
             Console.WriteLine("-------------------------------------------------------");
             Console.WriteLine();
             Console.WriteLine("Datos de origen: ");
-            Console.WriteLine($"Provincia de origen: {provinciaDeOrigenSeleccionada}");
-            Console.WriteLine($"Dirección de origen: {direccionOrigen}");
-            Console.WriteLine($"Codigo postal de origen: {codigoPostalOrigen}");
+            Console.WriteLine($"Provincia: {provinciaDeOrigenSeleccionada}");
+            Console.WriteLine($"Dirección: {direccionOrigen}");
+            Console.WriteLine($"Codigo postal: {codigoPostalOrigen}");
             Console.WriteLine("-------------------------------------------------------");
             Console.WriteLine();
             Console.WriteLine("Datos de destino: ");
-            Console.WriteLine($"Provincia de destino: {provinciaDeDestinoSeleccionada}{provinciaDestinoInternacional}");
-            Console.WriteLine($"Dirección de destino: {direccionDestino}");
-            Console.WriteLine($"Codigo postal de destino: {codigoPostalDestino}");
+            Console.WriteLine($"Destinatario: {nomapeDestinatario}");
+            Console.WriteLine($"Provincia: {provinciaDeDestinoSeleccionada}{provinciaDestinoInternacional}");
+            Console.WriteLine($"Dirección: {direccionDestino}");
+            Console.WriteLine($"Piso / Departamento / Referencia: {infoDomicilio}");
+            Console.WriteLine($"Codigo postal: {codigoPostalDestino}");
             Console.WriteLine("-------------------------------------------------------");
             Console.WriteLine();
             Console.WriteLine("Servicios adicionales: ");
@@ -689,7 +765,8 @@ namespace Trabajo_Practico_4
                 }
             }
 
-            Console.WriteLine("-------------------------------------------------------\n");
+            Console.WriteLine("-------------------------------------------------------" +
+                "\n------Enter para continuar------\n");
             Console.ReadKey();
         }
 
@@ -698,6 +775,18 @@ namespace Trabajo_Practico_4
         public static bool hasSpecialChar2(string input)
         {
             string specialChar = @"|¡!#$%&/()`^=¿?»«@£§€{}.,;:[]+-~`'°<>_";
+
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item)) return true;
+            }
+            return false;
+        }
+
+        //METODO PARA VALIDAR SIMBOLOS  Y NUMEROS
+        public static bool hasSpecialChar(string input)
+        {
+            string specialChar = @"|¡!#$%&/()`^=¿?»«@£§€{}.,;:[]+-~`'°<>_0123456789";
 
             foreach (var item in specialChar)
             {

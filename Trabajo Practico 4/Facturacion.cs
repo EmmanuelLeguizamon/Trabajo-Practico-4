@@ -12,8 +12,7 @@ namespace Trabajo_Practico_4
 
         public static void DatosFacturacion()
         {
-            //Verificao si el file existe, en caso de no existir se crea.
-
+            //Verifica si el file existe, en caso de no existir se crea.
         }
 
         //devuelve facturación por cliente

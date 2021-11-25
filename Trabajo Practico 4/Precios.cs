@@ -11,11 +11,9 @@ namespace Trabajo_Practico_4
     {
         public double IVA { get; } = 1.21;
         public double precioBruto { get; set; }
-        //public double precioAlcance { get; set; }
-        //public double precioAlcanceInt { get; set; }
         public double precioFinal { get; set; }
 
-        Dictionary<string, double> DiccionarioPrecios = new Dictionary<string, double>();
+        public Dictionary<string, double> DiccionarioPrecios = new Dictionary<string, double>();
 
         public void DatosTarifas()
         {
@@ -108,19 +106,27 @@ namespace Trabajo_Practico_4
 
             if (urgente == true)
             {
-                Console.WriteLine($"5)Urgente: Si - ${precioBruto * (DiccionarioPrecios["Urgente"] - 1)}");
-                precioBruto = precioBruto * DiccionarioPrecios["Urgente"];
+                if (precioBruto * (DiccionarioPrecios["Urgente"] - 1) <= DiccionarioPrecios["Tope Pais"])
+                {
+                    Console.WriteLine($"5)Urgente: Si - ${Math.Round(precioBruto * (DiccionarioPrecios["Urgente"] - 1), 2)}");
+                    precioBruto = precioBruto * DiccionarioPrecios["Urgente"];
+                }
+                else
+                {
+                    Console.WriteLine($"5)Urgente: Si - ${DiccionarioPrecios["Tope Pais"]}");
+                    precioBruto = precioBruto + DiccionarioPrecios["Tope Pais"];
+                }
             }
             else
                 Console.WriteLine("5)Urgente: No");
 
             Console.WriteLine("-------------------------------------------------------");
-            Console.WriteLine($"Valor del envío sin IVA: ${precioBruto}");
+            Console.WriteLine($"Valor del envío sin IVA: ${Math.Round(precioBruto, 2)}");
             Console.WriteLine();
 
             precioFinal = precioBruto * IVA;
 
-            return precioFinal;
+            return Math.Round(precioFinal, 2);
         }
 
         public double CalcularPrecioServicio(string tipoPaquete, int alcance, bool entregaPuerta, bool retiroPuerta, int alcanceEnvioInt, bool urgente)
@@ -203,18 +209,29 @@ namespace Trabajo_Practico_4
 
             if (urgente == true)
             {
-                Console.WriteLine($"6)Urgente: Si - ${precioBruto * (DiccionarioPrecios["Urgente"] - 1)}");
-                precioBruto = precioBruto * DiccionarioPrecios["Urgente"];
+                if (precioBruto * (DiccionarioPrecios["Urgente"] - 1) <= DiccionarioPrecios["Tope Internacional"])
+                {
+                    Console.WriteLine($"6)Urgente: Si - ${Math.Round(precioBruto * (DiccionarioPrecios["Urgente"] - 1), 2)}");
+                    precioBruto = precioBruto * DiccionarioPrecios["Urgente"];
+                }
+                else
+                {
+                    Console.WriteLine($"6)Urgente: Si - ${DiccionarioPrecios["Tope Internacional"]}");
+                    precioBruto = precioBruto + DiccionarioPrecios["Tope Internacional"];
+                }
+
             }
             else
                 Console.WriteLine("6)Urgente: No");
 
             Console.WriteLine("-------------------------------------------------------");
-            Console.WriteLine($"Valor del envío sin IVA: ${precioBruto}\n");
+            Console.WriteLine($"Valor del envío sin IVA: ${Math.Round(precioBruto, 2)}\n");
 
             precioFinal = precioBruto * IVA;
 
-            return precioFinal;
+
+
+            return Math.Round(precioFinal, 2);
         }
 
     }

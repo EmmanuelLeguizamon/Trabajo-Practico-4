@@ -50,7 +50,7 @@ namespace Trabajo_Practico_4
             foreach (var item in Estado_de_servicio.ConsultarServiciosCliente(cuit))
             {
                 string[] linea = item.Split(';');
-                Console.WriteLine($"Código servicio: {linea[0]} \t\t Monto total: {linea[3]} \t\t Estado: {linea[2]}");
+                Console.WriteLine($"Código servicio: {linea[0]} \t\t Monto total: ${linea[3]} \t\t Estado: {linea[2]}");
             }
 
             Console.ReadKey();
@@ -69,7 +69,10 @@ namespace Trabajo_Practico_4
             {
                 string[] linea = item.Split(';');
                 codigos_facturados.Add(linea[2]);
+
             }
+
+
 
             //arranca con lista de todos los servicios
             foreach (var item in Estado_de_servicio.ConsultarServiciosCliente(cuit))
@@ -77,9 +80,9 @@ namespace Trabajo_Practico_4
                 string[] lineaservicio = item.Split(';');
 
                 //escribe los que no estan facurados
-                if (!codigos_facturados.Contains(lineaservicio[1]))
+                if (!codigos_facturados.Contains(lineaservicio[0]))
                 {
-                    Console.WriteLine($"Código servicio: {lineaservicio[0]} \t\t Monto total: {lineaservicio[3]} \t\t Estado: Pendiente Facturación");
+                    Console.WriteLine($"Código servicio: {lineaservicio[0]} \t\t Monto total: ${lineaservicio[3]} \t\t Estado: Pendiente Facturación");
                     double monto = double.Parse(lineaservicio[3]);
                 }
                 //escribe los facturados 
@@ -89,17 +92,17 @@ namespace Trabajo_Practico_4
                     {
                         string[] lineafactura = item2.Split(';');
 
-                        if (lineaservicio[1] == lineafactura[2])
+                        if (lineaservicio[0] == lineafactura[2])
                         {
                             //escribe los que estan pagos
                             if (lineafactura[3] == "si")
                             {
-                                Console.WriteLine($"Código servicio: {lineafactura[2]} \t\t Monto total: {lineafactura[4]} \t\t Estado: Pago");
+                                Console.WriteLine($"Código servicio: {lineafactura[2]} \t\t Monto total: ${lineafactura[4]} \t\t Estado: Pago");
                                 double monto = double.Parse(lineafactura[4]);
                                 servicios_pagos += monto;
                             }
                             else
-                                Console.WriteLine($"Código servicio: {lineafactura[2]} \t\t Monto total: {lineafactura[4]} \t\t Estado: Facturado pendiente de pago");
+                                Console.WriteLine($"Código servicio: {lineafactura[2]} \t\t Monto total: ${lineafactura[4]} \t\t Estado: Facturado pendiente de pago");
 
                         }
 
@@ -112,8 +115,8 @@ namespace Trabajo_Practico_4
 
             }
 
-            Console.WriteLine($"\nSu saldo deudor es de ${servicios_total - servicios_pagos}" +
-                        "\nPresione una tecla para volver al menú principal.\n");
+            Console.WriteLine($"\nSu saldo deudor es de ${Math.Round(servicios_total - servicios_pagos, 2)}" +
+                        "\n------ENTER para volver al menú------\n");
             Console.ReadKey();
         }
 
@@ -122,7 +125,7 @@ namespace Trabajo_Practico_4
             string estado_servicio = "";
             int codigo = Logistica.ValidarCodigoIngresado();
 
-            //falta recorrer txt y escribir el estado
+
             using (StreamReader sr = new StreamReader(@"CodigosdeSeguimiento.txt"))
             {
                 string line;
@@ -139,7 +142,9 @@ namespace Trabajo_Practico_4
                 sr.Close();
             }
 
-            Console.WriteLine($"Estado del servicio {codigo}: {estado_servicio}");
+            Console.WriteLine();
+            Console.WriteLine($"Estado del servicio {codigo}: {estado_servicio}" +
+                $"\n------ENTER para volver al menú------\n");
 
         }
 

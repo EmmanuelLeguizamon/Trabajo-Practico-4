@@ -35,7 +35,7 @@ namespace Trabajo_Practico_4
             const int MaxLenght = 99999;
             do
             {
-                Console.WriteLine("Ingrese su número de cliente corporativo. (5 dígitos, sin guiones ni espacios)");
+                Console.WriteLine("Ingrese su número de cliente corporativo (5 dígitos, sin guiones ni espacios)");
                 input = Console.ReadLine();
 
                 if (!int.TryParse(input, out int Nrocliente))
@@ -85,5 +85,8 @@ namespace Trabajo_Practico_4
             //Verifico si el file existe, en caso de no existir se crea.
 
         }
+
+
+
     }
 }
